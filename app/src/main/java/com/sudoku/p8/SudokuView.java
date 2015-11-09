@@ -2,6 +2,7 @@ package com.sudoku.p8;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.SurfaceView;
@@ -24,6 +25,7 @@ public class SudokuView extends SurfaceView {
         cellWidth = cellHeight = 20;
 
         linePaint = new Paint();
+        linePaint.setColor(Color.BLACK);
 
     }
 
@@ -34,7 +36,7 @@ public class SudokuView extends SurfaceView {
         // draw vertical lines
         for (int c = 0; c <= 9; c++) {
             float x = (c * cellWidth);
-            canvas.drawLine(x, 0, x, height, linePaint);
+            canvas.drawLine(x, 0, x, height-50, linePaint);
         }
 
         // draw horizontal lines
@@ -44,54 +46,7 @@ public class SudokuView extends SurfaceView {
         }
         
         
-        private boolean checkSudokuStatus(int[][] grid) {
-    for (int i = 0; i < 9; i++) {
 
-        int[] row = new int[9];
-        int[] square = new int[9];
-        int[] column = grid[i].clone();
-
-        for (int j = 0; j < 9; j ++) {
-            row[j] = grid[j][i];
-            square[j] = grid[(i / 3) * 3 + j / 3][i * 3 % 9 + j % 3];
-        }
-        if (!(validate(column) && validate(row) && validate(square)))
-            return false;
-    }
-    return true;
-}
-
-private boolean validate(int[] check) {
-    int i = 0;
-    Arrays.sort(check);
-    for (int number : check) {
-        if (number != ++i)
-            return false;
-    }
-    return true;
-}
-
-/*
-// cleaner 
-for (k=0; k < difficulty; ) {
- 
-  save1 = solution[i][j];
-  solution[i][j] = 0;
-  save2 = solution[8-i][8-j];
-  solution[8-i][8-j] = 0;
-
-  if (!can_be_solved(solution)) {
-    // (i, j) was not a good choice!
-    solution[i][j] = save1;
-    solution[8-i][8-j] = save2;
-  }
-  else {
-    // it's still OK, let's go one step further
-    k += 1;
-  }
-}
-
-*/
 
     }
 }
