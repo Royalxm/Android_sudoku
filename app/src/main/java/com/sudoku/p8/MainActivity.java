@@ -1,9 +1,11 @@
 package com.sudoku.p8;
 
+import android.app.Activity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends Activity {
 
     private SudokuView SudokuView;
 
@@ -13,5 +15,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         SudokuView = (SudokuView)findViewById(R.id.SudokuView);
+
+        SudokuView.setVisibility(View.VISIBLE);
     }
 }
