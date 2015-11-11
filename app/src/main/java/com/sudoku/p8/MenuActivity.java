@@ -14,7 +14,7 @@ public class MenuActivity extends Activity {
     }
 
     private void startGame() {
-        Intent intent = new Intent();
-        intent.
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 }
