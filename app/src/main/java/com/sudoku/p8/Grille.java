@@ -3,6 +3,7 @@ package com.sudoku.p8;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -24,31 +25,19 @@ public class Grille {
     }
 
     public void initGrid() {
-//        int r = 1;
-//
-//        for (int c = 1; c <= 9; c++,r++) {
-//            float x = (float)(c * cellWidth);
-//            float y = (float) (r * cellHeight);
-//
-//            Rect rect = new Rect((int) x, (int)y, (int)x+cellWidth, (int)y+cellHeight);
-//
-//            this.add(new Cellule((rect)));
-//        }
 
+        int index = 0;
 
-        for(int c = 0; c <= 9; c++)
+        for(int c = 0; c < 9; c++)
         {
-            float x = (float)(c * cellWidth);
-
-            for(int  r = 0; r <= 9;r++)
+            for(int  r = 0; r < 9;r++)
             {
+                float x = (float)(c * cellWidth);
                 float y = (float) (r * cellHeight);
 
-                Rect rect = new Rect((int) x, (int)y, (int)x+cellWidth, (int)y+cellHeight);
+                Rect rect = new Rect((int) y, (int)x, (int)y+cellWidth, (int)x+cellHeight);
 
-                this.add(new Cellule((rect)));
-
-
+                celltab.add(new Cellule((rect)));
             }
         }
     }
@@ -56,10 +45,6 @@ public class Grille {
     public float getCellWidth() { return this.cellWidth; }
 
     public float getCellHeight() { return this.cellHeight; }
-
-    public void add (Cellule c) {
-        celltab.add(c);
-    }
 
     public ArrayList<Cellule> getCellTab() {
         return celltab;

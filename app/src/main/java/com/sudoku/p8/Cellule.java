@@ -7,27 +7,26 @@ import android.graphics.Rect;
  */
 public class Cellule {
 
-    private float x,y;
+    private int value;
     private Rect rect;
     private boolean selected = false;
 
         public Cellule(Rect rect)
         {
-            this.x = x;
-            this.y = y;
             this.rect = rect;
-
+            this.value = 0;
         }
+
+    public void setValue(int val) {
+        this.value = val;
+    }
+
+    public int getValue() {
+        return this.value;
+    }
 
     public Rect getRect() {return this.rect; }
 
-    public float getX() {
-        return this.x;
-    }
-
-    public float getY() {
-        return this.y;
-    }
 
     public void setSelected() { this.selected=true; }
 

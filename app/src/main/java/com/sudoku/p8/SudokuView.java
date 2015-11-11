@@ -25,6 +25,7 @@ public class SudokuView extends SurfaceView  implements SurfaceHolder.Callback, 
     private  Thread  cv_thread;
     private Grille grille;
     private Cellule paintedCell;
+    private SudokuGame game;
     private boolean paintCell = false;
 
     public SudokuView(Context context, AttributeSet attrs) {
@@ -34,18 +35,7 @@ public class SudokuView extends SurfaceView  implements SurfaceHolder.Callback, 
         // permet d'ecouter les surfaceChanged, surfaceCreated, surfaceDestroyed
         holder = getHolder();
         holder.addCallback(this);
-
-        setLayoutParams(new LinearLayout.LayoutParams(this.getWidth(), this.getWidth()));
-
-
-
-        init();
-
-
-
         cv_thread   = new Thread(this);
-
-
     }
 
     @Override
@@ -66,7 +56,11 @@ public class SudokuView extends SurfaceView  implements SurfaceHolder.Callback, 
 
         grille  = new Grille(width, height);
 
+        game = new SudokuGame();
+
         grille.initGrid();
+
+        game.init(grille);
 
         linePaint = new Paint();
         linePaint.setColor(Color.BLACK);
@@ -90,9 +84,7 @@ public class SudokuView extends SurfaceView  implements SurfaceHolder.Callback, 
         float cellWidth = grille.getCellWidth();
         float cellHeight = grille.getCellHeight();
 
-        int r = 1;
-
-        for (int c = 1; c <= 8; c++,r++) {
+        for (int c = 1, r = 1; c < 9; c++,r++) {
             float x = (float)(c * cellWidth);
             float y = (float) (r * cellHeight);
 
@@ -107,56 +99,23 @@ public class SudokuView extends SurfaceView  implements SurfaceHolder.Callback, 
             canvas.drawLine(0, y, width, y, linePaint);
         }
 
-
-//        for(Cellule cell : grille.getCellTab()) {
-//            Rect cellRect = cell.getRect();
-//            int i=0, j=0;
-//            linePaint.setStrokeWidth(2);
-//            canvas.drawRect(cell.getRect(), linePaint);
-//
-//            if(i%3==0) {
-//                linePaint.setStrokeWidth(7);
-//                canvas.drawLine(0, i, width, 0, linePaint);
-//            }
-//
-//            if(j%3==0) {
-//                linePaint.setStrokeWidth(7);
-//                canvas.drawLine(0, i, width, 0, linePaint);
-//            }
-  //      }
-
-//        for(int c = 0; c <= 9; c++)
-//        {
-//            float y = (float) (c * cellHeight)- cellHeight/2;
-//            for( r = 0; r <= 9;r++)
-//            {
-//                float x = (float)(r * cellWidth) + cellWidth/2;
-//                Paint paint = new Paint();
-//
-//                paint.setColor(Color.BLACK);
-//                paint.setTextSize(25);
-//                canvas.drawText("0", x, y, paint);
-//
-//
-//            }
-//        }
-
     }
 
 
     private void paintValues(Canvas canvas) {
         Paint paint = new Paint();
-        int y=1;
         paint.setColor(Color.BLACK);
         paint.setTextAlign(Paint.Align.CENTER);
         paint.setAntiAlias(true);
         paint.setTextSize(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,25, getResources().getDisplayMetrics()));
         Rect bounds =  new Rect();
-
+        int i=0;
         for(Cellule cell : grille.getCellTab()) {
-            paint.getTextBounds("0", 0, 1, bounds);
-            canvas.drawText("0", cell.getRect().exactCenterX(), (cell.getRect().top-bounds.height()/2), paint);
-            y++;
+           // Log.d("Cell Value", "Cell n°+"+i+" : "+cell.getValue());
+            paint.getTextBounds(String.valueOf(cell.getValue()), 0, 1, bounds);
+            canvas.drawText(String.valueOf(cell.getValue()), cell.getRect().exactCenterX(),
+                    (cell.getRect().bottom - (bounds.height()/2))-5, paint);
+            i++;
         }
     }
 
