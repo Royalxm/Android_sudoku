@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 /**
@@ -19,7 +20,7 @@ public class SudokuView extends SurfaceView  implements SurfaceHolder.Callback, 
     private Paint linePaint;
     private boolean in = true;
     private int width, height, cellWidth, cellHeight;
-    private SurfaceHolder holder;
+    SurfaceHolder holder;
     private  Thread  cv_thread;
 
     public SudokuView(Context context, AttributeSet attrs) {
@@ -29,44 +30,67 @@ public class SudokuView extends SurfaceView  implements SurfaceHolder.Callback, 
         holder = getHolder();
         holder.addCallback(this);
 
-        width = getWidth();
-        height = getHeight();
-        cellWidth = cellHeight = 20;
+        setLayoutParams(new LinearLayout.LayoutParams(this.getWidth(), this.getWidth()));
 
-        linePaint = new Paint();
-        linePaint.setColor(Color.BLACK);
+
+        init();
+
+
 
         cv_thread   = new Thread(this);
 
+
+    }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+
+        Log.d("MES b4", "width: " + getMeasuredWidth() + " height: " + getMeasuredHeight());
+
+        setMeasuredDimension(getMeasuredWidth(), getMeasuredWidth());
+        Log.d("MES after", "width: " + getMeasuredWidth() + " height: " + getMeasuredHeight());
+    }
+
+    private void init() {
+
+        width = this.getWidth();
+        height = this.getHeight();
+        cellWidth = width / 9;
+        cellHeight = height/9;
+
+        linePaint = new Paint();
+        linePaint.setColor(Color.BLACK);
+        linePaint.setStyle(Paint.Style.FILL);
+
         if ((cv_thread!=null) && (!cv_thread.isAlive())) {
             cv_thread.start();
-            Log.e("-FCT-", "cv_thread.start()");
+            Log.d("-FCT-", "cv_thread.start()");
 
         }
-//        }
-//        else
-//        {
-//
-//            Toast.makeText(getContext(),"fjenf", Toast.LENGTH_SHORT).show();
-//
-//        }
-
-
-
     }
 
 
     private void paintGrid(Canvas canvas) {
         // draw vertical lines
+
+
+
         for (int c = 0; c <= 9; c++) {
-            float x = (c * cellWidth);
+            float x = (float)(c * cellWidth);
+            if(c % 3==0) linePaint.setStrokeWidth(7);
+            else
+                linePaint.setStrokeWidth(2);
             canvas.drawLine(x, 0, x, height, linePaint);
         }
 
         // draw horizontal lines
         for (int r = 0; r <= 9; r++) {
-            float y = r * cellHeight;
-            canvas.drawLine(0, y, width, y, linePaint);
+            float y = (float) (r * cellHeight);
+            if(r % 3==0) linePaint.setStrokeWidth(7);
+            else
+                linePaint.setStrokeWidth(2);
+            canvas.drawLine(0, y,width, y, linePaint);
         }
     }
 
@@ -83,6 +107,7 @@ public class SudokuView extends SurfaceView  implements SurfaceHolder.Callback, 
         while (in) {
             try {
                 cv_thread.sleep(40);
+
                 try {
                     c = holder.lockCanvas(null);
                     nDraw(c);
@@ -92,23 +117,23 @@ public class SudokuView extends SurfaceView  implements SurfaceHolder.Callback, 
                     }
                 }
             } catch(Exception e) {
-                Log.e("-> RUN <-", "PB DANS RUN : " + e.toString());
+                Log.e("-> RUN <-", "PB DANS RUN : "+e.toString());
             }
         }
     }
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-
+        Log.i("-> FCT <-", "surfaceCreated");
     }
 
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-
+        init();
     }
 
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
-
+        Log.i("-> FCT <-", "surfaceDestroyed");
     }
 }

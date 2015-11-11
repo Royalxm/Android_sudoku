@@ -5,7 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
-public class MainActivity extends Activity {
+public class MainActivity extends AppCompatActivity {
 
     private SudokuView SudokuView;
 
@@ -18,4 +18,6 @@ public class MainActivity extends Activity {
 
         SudokuView.setVisibility(View.VISIBLE);
     }
+
+
 }
