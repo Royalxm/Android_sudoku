@@ -22,8 +22,10 @@ public class SudokuView extends SurfaceView  implements SurfaceHolder.Callback, 
     private int width, height, cellWidth, cellHeight;
     SurfaceHolder holder;
     private  Thread  cv_thread;
+    private Grille grille;
 
     public SudokuView(Context context, AttributeSet attrs) {
+
         super(context, attrs);
 
         // permet d'ecouter les surfaceChanged, surfaceCreated, surfaceDestroyed
@@ -31,6 +33,7 @@ public class SudokuView extends SurfaceView  implements SurfaceHolder.Callback, 
         holder.addCallback(this);
 
         setLayoutParams(new LinearLayout.LayoutParams(this.getWidth(), this.getWidth()));
+        grille  = new Grille();
 
 
         init();
@@ -74,24 +77,41 @@ public class SudokuView extends SurfaceView  implements SurfaceHolder.Callback, 
     private void paintGrid(Canvas canvas) {
         // draw vertical lines
 
+        int r = 0;
 
-
-        for (int c = 0; c <= 9; c++) {
+        for (int c = 0; c <= 9; c++,r++) {
             float x = (float)(c * cellWidth);
+            float y = (float) (r * cellHeight);
             if(c % 3==0) linePaint.setStrokeWidth(7);
             else
                 linePaint.setStrokeWidth(2);
             canvas.drawLine(x, 0, x, height, linePaint);
-        }
-
-        // draw horizontal lines
-        for (int r = 0; r <= 9; r++) {
-            float y = (float) (r * cellHeight);
+            // draw horizontal lines
             if(r % 3==0) linePaint.setStrokeWidth(7);
             else
                 linePaint.setStrokeWidth(2);
-            canvas.drawLine(0, y,width, y, linePaint);
+            canvas.drawLine(0, y, width, y, linePaint);
+
+
+
         }
+
+        for(int c = 0; c <= 9; c++)
+        {
+            float y = (float) (c * cellHeight)- cellHeight/2;
+            for( r = 0; r <= 9;r++)
+            {
+                float x = (float)(r * cellWidth) + cellWidth/2;
+                Paint paint = new Paint();
+
+                paint.setColor(Color.BLACK);
+                paint.setTextSize(25);
+                canvas.drawText("0", x, y, paint);
+
+                grille.add(new Cellule(x,y));
+            }
+        }
+
     }
 
 
