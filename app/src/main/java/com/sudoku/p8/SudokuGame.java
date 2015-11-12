@@ -24,6 +24,7 @@ public class SudokuGame {
 
     public void init (Grille grille) {
         int[][] tab2 = new int[9][9];
+        int[][] tab3 = new int[9][9];
         int save1 = 0;
         int save2 = 0;
 
@@ -51,9 +52,42 @@ public class SudokuGame {
             }
         }
 
+
+
+
+        for (k=0; k != 10; ) {
+            int i = randomGenerator.nextInt(4);
+            int j = randomGenerator.nextInt(4);
+            save1 = tab2[i][j];
+            tab2[i][j] = 0;
+            save2 = tab2[8-i][8-j];
+            tab2[8-i][8-j] = 0;
+
+            for (i2=0;i2!=9;i2++) {
+                for (i3=0;i3!=9;i3++) {
+                    tab3[i2][i3] = tab2[i2][i3];
+                }
+            }
+
+            if (!fillSudoku(tab3, 0, 0)) {
+                // (i, j) was not a good choice!
+                tab2[i][j] = save1;
+                tab2[8-i][8-j] = save2;
+
+            }
+            else {
+
+                // it's still OK, let's go one step further
+                k += 1;
+            }
+
+        }
+
+        System.out.println();
+
         for (i2=0;i2!=9;i2++) {
             for (i3=0;i3!=9;i3++) {
-                System.out.printf("%2d",tab[i2][i3]);
+                System.out.printf("%2d",tab3[i2][i3]);
 
                 if(i3%3 == 2)
                     System.out.printf("  ");
@@ -64,26 +98,6 @@ public class SudokuGame {
         }
 
 
-        for (k=0; k != 1; ) {
-            int i = randomGenerator.nextInt(4);
-            int j = randomGenerator.nextInt(4);
-            save1 = tab2[i][j];
-            //tab2[i][j] = 0;
-            save2 = tab2[8-i][8-j];
-
-            if (!checkSudokuStatus(tab2)) {
-                // (i, j) was not a good choice!
-                tab2[i][j] = save1;
-                tab2[8-i][8-j] = save2;
-
-            }
-            else {
-                // it's still OK, let's go one step further
-                k += 1;
-            }
-
-        }
-
         int index = 0;
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j ++) {
@@ -92,33 +106,6 @@ public class SudokuGame {
             }
         }
 
-    }
-
-    private static boolean checkSudokuStatus( int[][] grid) {
-        for (int i = 0; i < 9; i++) {
-
-            int[] row = new int[9];
-            int[] square = new int[9];
-            int[] column = grid[i].clone();
-
-            for (int j = 0; j < 9; j ++) {
-                row[j] = grid[j][i];
-                square[j] = grid[(i / 3) * 3 + j / 3][i * 3 % 9 + j % 3];
-            }
-            if (!(validate(column) && validate(row) && validate(square)))
-                return false;
-        }
-        return true;
-    }
-
-    private static boolean validate(int[] check) {
-        int i = 0;
-        Arrays.sort(check);
-        for (int number : check) {
-            if (number != ++i)
-                return false;
-        }
-        return true;
     }
 
     private int getBox(int row,int col){
@@ -223,6 +210,60 @@ public class SudokuGame {
             boxes[i] = ary3;
         }
 
+    }
+
+
+
+
+    private boolean isAvailable(int puzzle[][], int row, int col, int num)
+    {
+        int rowStart = (row/3) * 3;
+        int colStart = (col/3) * 3;
+        int i, j;
+
+        for(i=0; i<9; ++i)
+        {
+            if (puzzle[row][i] == num) return false;
+            if (puzzle[i][col] == num) return false;
+            if (puzzle[rowStart + (i % 3)][colStart + (i / 3)] == num) return false;
+        }
+        return true;
+    }
+
+    private boolean fillSudoku(int puzzle[][], int row, int col)
+    {
+        int i;
+        if(row<9 && col<9)
+        {
+            if(puzzle[row][col] != 0)
+            {
+                if((col+1)<9) return fillSudoku(puzzle, row, col+1);
+                else if((row+1)<9) return fillSudoku(puzzle, row+1, 0);
+                else return true;
+            }
+            else
+            {
+                for(i=0; i<9; ++i)
+                {
+                    if(isAvailable(puzzle, row, col, i+1))
+                    {
+                        puzzle[row][col] = i+1;
+                        if((col+1) < 9) {
+                            if(fillSudoku(puzzle, row, col +1)) return true;
+                            else puzzle[row][col] = 0;
+                        }
+                        else if((row+1)<9)
+                        {
+                            if(fillSudoku(puzzle, row+1, 0)) return true;
+                            else puzzle[row][col] = 0;
+                        }
+                        else return true;
+                    }
+                }
+            }
+            return false;
+        }
+        else return true;
     }
 
 

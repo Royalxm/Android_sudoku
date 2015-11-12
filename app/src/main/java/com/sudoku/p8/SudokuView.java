@@ -113,8 +113,10 @@ public class SudokuView extends SurfaceView  implements SurfaceHolder.Callback, 
         for(Cellule cell : grille.getCellTab()) {
            // Log.d("Cell Value", "Cell n°+"+i+" : "+cell.getValue());
             paint.getTextBounds(String.valueOf(cell.getValue()), 0, 1, bounds);
-            canvas.drawText(String.valueOf(cell.getValue()), cell.getRect().exactCenterX(),
-                    (cell.getRect().bottom - (bounds.height()/2))-5, paint);
+            if(cell.getValue() != 0) {
+                canvas.drawText(String.valueOf(cell.getValue()), cell.getRect().exactCenterX(),
+                        (cell.getRect().bottom - (bounds.height() / 2)) - 5, paint);
+            }
             i++;
         }
     }
