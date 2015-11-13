@@ -101,7 +101,9 @@ public class SudokuGame {
         int index = 0;
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j ++) {
-                grille.getCellTab().get(index++).setValue(tab2[i][j]);
+                Cellule cell = grille.getCellTab().get(index++);
+                if(tab2[i][j]!= 0) cell.setLocked(true);
+                cell.setValue(tab2[i][j]);
                // Log.d("Value", "i:"+i+" j: "+j+" value: " + tab2[i][j]);
             }
         }

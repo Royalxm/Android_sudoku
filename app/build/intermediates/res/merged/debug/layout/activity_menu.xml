@@ -12,4 +12,4 @@
         android:id="@+id/buttonJouer"
         android:layout_gravity="center_horizontal" />
 </LinearLayout>
-<!-- From: file:/Users/Royal/GitHub/Android_sudoku/app/src/main/res/layout/activity_menu.xml -->
+<!-- From: file:/home/cap-one/M1/Android/Sudoku/app/src/main/res/layout/activity_menu.xml -->

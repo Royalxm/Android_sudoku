@@ -10,6 +10,7 @@ public class Cellule {
     private int value;
     private Rect rect;
     private boolean selected = false;
+    private boolean isLocked = false;
 
         public Cellule(Rect rect)
         {
@@ -27,6 +28,13 @@ public class Cellule {
 
     public Rect getRect() {return this.rect; }
 
+    public void setLocked(boolean locked) {
+        this.isLocked = locked;
+    }
+
+    public boolean isLocked() {
+        return this.isLocked;
+    }
 
     public void setSelected() { this.selected=true; }
 

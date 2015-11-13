@@ -12,6 +12,7 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 /**
  * Created by cap-one on 09/11/15.
@@ -26,6 +27,7 @@ public class SudokuView extends SurfaceView  implements SurfaceHolder.Callback, 
     private Grille grille;
     private Cellule paintedCell;
     private SudokuGame game;
+    private boolean  fp = false;
     private boolean paintCell = false;
 
     public SudokuView(Context context, AttributeSet attrs) {
@@ -101,21 +103,34 @@ public class SudokuView extends SurfaceView  implements SurfaceHolder.Callback, 
 
     }
 
+    private float getDimensions(int value, String type) {
+        if(type.equals("dp"))
+            return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,value, getResources().getDisplayMetrics());
+        else if(type.equals("px"))
+            return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX,value, getResources().getDisplayMetrics());
+     return 0;
+    }
+
 
     private void paintValues(Canvas canvas) {
         Paint paint = new Paint();
-        paint.setColor(Color.BLACK);
         paint.setTextAlign(Paint.Align.CENTER);
         paint.setAntiAlias(true);
-        paint.setTextSize(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,25, getResources().getDisplayMetrics()));
+        paint.setTextSize(getDimensions(25, "dp"));
         Rect bounds =  new Rect();
         int i=0;
         for(Cellule cell : grille.getCellTab()) {
            // Log.d("Cell Value", "Cell n°+"+i+" : "+cell.getValue());
             paint.getTextBounds(String.valueOf(cell.getValue()), 0, 1, bounds);
+
+            paint.setColor(Color.BLACK);
+
             if(cell.getValue() != 0) {
+                if(!cell.isLocked())
+                    paint.setColor(Color.BLUE);
                 canvas.drawText(String.valueOf(cell.getValue()), cell.getRect().exactCenterX(),
-                        (cell.getRect().bottom - (bounds.height() / 2)) - 5, paint);
+                    (cell.getRect().bottom - (bounds.height() / 2)) - getDimensions(5, "px"), paint);
+
             }
             i++;
         }
@@ -138,6 +153,19 @@ public class SudokuView extends SurfaceView  implements SurfaceHolder.Callback, 
         paintCell(canvas);
     }
 
+
+
+    public void getNum(int value) {
+        if(grille != null) {
+            Cellule selectedCell = grille.getSelectedCell();
+            if(selectedCell != null) {
+                if(!selectedCell.isLocked())
+                    grille.getSelectedCell().setValue(value);
+            }
+            else Toast.makeText(getContext(), "Selectionnez une case", Toast.LENGTH_LONG).show();
+        }
+    }
+
     public void run() {
         Canvas c = null;
         while (in) {
@@ -153,7 +181,7 @@ public class SudokuView extends SurfaceView  implements SurfaceHolder.Callback, 
                     }
                 }
             } catch(Exception e) {
-                Log.e("-> RUN <-", "PB DANS RUN : "+e.toString());
+                //Log.e("-> RUN <-", "PB DANS RUN : " + e.toString());
             }
         }
     }
@@ -165,7 +193,17 @@ public class SudokuView extends SurfaceView  implements SurfaceHolder.Callback, 
 
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-        init();
+        Log.i("-> FCT <-", "surfaceChanged");
+        if(!fp) {
+            init();
+            fp = true;
+        }
+        else {
+            if ((cv_thread!=null) && (!cv_thread.isAlive())) {
+                cv_thread.start();
+                Log.d("-FCT-", "cv_thread.start()");
+            }
+        }
     }
 
     @Override
@@ -184,6 +222,7 @@ public class SudokuView extends SurfaceView  implements SurfaceHolder.Callback, 
             paintCell = true;
             Log.d("PAINT", "paint cell n°"+grille.getCellTab().indexOf(paintedCell));
             paintedCell.setSelected();
+            grille.cellSelected(paintedCell);
         }
 
         return super.onTouchEvent(event);

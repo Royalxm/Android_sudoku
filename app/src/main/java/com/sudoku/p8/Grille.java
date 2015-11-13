@@ -14,6 +14,7 @@ public class Grille {
 
    private int width, height, cellWidth, cellHeight;
     private ArrayList<Cellule> celltab;
+    private Cellule selectedCell;
 
 
     public Grille (int width, int height) {
@@ -22,6 +23,7 @@ public class Grille {
         cellWidth = this.width / 9;
         cellHeight = this.height/9;
         celltab = new ArrayList<>();
+        selectedCell = null;
     }
 
     public void initGrid() {
@@ -55,5 +57,14 @@ public class Grille {
             if(cell.getRect().contains(x,y)) return cell;
         }
         return null;
+    }
+
+
+    public void cellSelected(Cellule cell) {
+        this.selectedCell = cell;
+    }
+
+    public Cellule getSelectedCell() {
+        return this.selectedCell;
     }
 }
