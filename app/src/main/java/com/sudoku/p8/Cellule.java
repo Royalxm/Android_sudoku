@@ -8,6 +8,7 @@ import android.graphics.Rect;
 public class Cellule {
 
     private int value;
+    private int[] pos;
     private Rect rect;
     private boolean selected = false;
     private boolean isLocked = false;
@@ -16,6 +17,7 @@ public class Cellule {
         {
             this.rect = rect;
             this.value = 0;
+            this.pos = new int[2];
         }
 
     public void setValue(int val) {
@@ -24,6 +26,15 @@ public class Cellule {
 
     public int getValue() {
         return this.value;
+    }
+
+    public void setPos(int x, int y) {
+        this.pos[0] = x;
+        this.pos[1] = y;
+    }
+
+    public int[] getPos() {
+        return this.pos;
     }
 
     public Rect getRect() {return this.rect; }
@@ -37,5 +48,9 @@ public class Cellule {
     }
 
     public void setSelected() { this.selected=true; }
+
+    public boolean isWrong(SudokuGame game, Grille grille) {
+        return !game.checkSudoku2(grille, this.pos, this.value);
+    }
 
 }

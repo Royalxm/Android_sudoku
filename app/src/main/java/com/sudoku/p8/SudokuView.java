@@ -1,6 +1,8 @@
 package com.sudoku.p8;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -128,6 +130,8 @@ public class SudokuView extends SurfaceView  implements SurfaceHolder.Callback, 
             if(cell.getValue() != 0) {
                 if(!cell.isLocked())
                     paint.setColor(Color.BLUE);
+                if(!cell.isLocked() && cell.isWrong(game, grille))
+                    paint.setColor(Color.RED);
                 canvas.drawText(String.valueOf(cell.getValue()), cell.getRect().exactCenterX(),
                     (cell.getRect().bottom - (bounds.height() / 2)) - getDimensions(5, "px"), paint);
 
@@ -146,7 +150,20 @@ public class SudokuView extends SurfaceView  implements SurfaceHolder.Callback, 
 
     private void nDraw(Canvas canvas) {
         canvas.drawRGB(255, 255, 255);
-        //Toast.makeText(getContext(),"fjenf", Toast.LENGTH_SHORT).show();
+        if(game.isWon(grille)) {
+//            AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
+//            alert.setTitle("Vous avez gagné !");
+//            alert.setMessage("Vous avez résolu le sudoku en (temps) sec");
+//            alert.setPositiveButton("Super !", new DialogInterface.OnClickListener() {
+//
+//                public void onClick(DialogInterface dialog, int id) {
+//                    dialog.dismiss();
+//                }
+//            });
+//            alert.show();
+
+            Toast.makeText(getContext(), "Vous avez résolu le sudoku en (temps) sec !", Toast.LENGTH_LONG).show();
+        }
 
         paintGrid(canvas);
         paintValues(canvas);
@@ -166,9 +183,15 @@ public class SudokuView extends SurfaceView  implements SurfaceHolder.Callback, 
         }
     }
 
+    public void clearCase() {
+        if(grille != null)
+            grille.getSelectedCell().setValue(0);
+    }
+
     public void run() {
         Canvas c = null;
         while (in) {
+          //  Log.i("-> FCT <-", "in");
             try {
                 cv_thread.sleep(40);
 
@@ -197,12 +220,6 @@ public class SudokuView extends SurfaceView  implements SurfaceHolder.Callback, 
         if(!fp) {
             init();
             fp = true;
-        }
-        else {
-            if ((cv_thread!=null) && (!cv_thread.isAlive())) {
-                cv_thread.start();
-                Log.d("-FCT-", "cv_thread.start()");
-            }
         }
     }
 

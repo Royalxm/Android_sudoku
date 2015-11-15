@@ -11,6 +11,7 @@ public class MainActivity extends AppCompatActivity {
 
     private SudokuView SudokuView;
     private Button[] numpad;
+    private Button clear;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +32,15 @@ public class MainActivity extends AppCompatActivity {
         numpad[6] = (Button) findViewById(R.id.button7);
         numpad[7] = (Button) findViewById(R.id.button8);
         numpad[8] = (Button) findViewById(R.id.button9);
+
+        clear = (Button) findViewById(R.id.buttonClear);
+
+        clear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SudokuView.clearCase();
+            }
+        });
 
         for(final Button button : numpad) {
             button.setOnClickListener(new View.OnClickListener() {

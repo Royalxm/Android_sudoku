@@ -4,6 +4,7 @@ import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -17,6 +18,7 @@ public class SudokuGame {
     static ArrayList boxes[];
     static int board[] = new int[1+(no*no)];
     static int[][] tab = new int[9][9];
+    static int grid[][] = new int[9][9];
 
     public SudokuGame() {
 
@@ -51,8 +53,6 @@ public class SudokuGame {
                 tab2[i2][i3] = tab[i2][i3];
             }
         }
-
-
 
 
         for (k=0; k != 10; ) {
@@ -104,11 +104,109 @@ public class SudokuGame {
                 Cellule cell = grille.getCellTab().get(index++);
                 if(tab2[i][j]!= 0) cell.setLocked(true);
                 cell.setValue(tab2[i][j]);
+                cell.setPos(i,j);
                // Log.d("Value", "i:"+i+" j: "+j+" value: " + tab2[i][j]);
             }
         }
 
     }
+
+
+    public int gridAt(int i, int j) {
+        return tab[i][j];
+    }
+
+
+    public boolean checkSudoku2(Grille grille, int[] cellpos, int cellvalue) {
+
+        int[][] tempGrid = new int[9][9];
+        int index = 0;
+
+        for (int i1=0;i1!=9;i1++) {
+            for (int j1 = 0; j1 != 9; j1++) {
+                tempGrid[i1][j1] = grille.getCellTab().get(index++).getValue();
+            }
+        }
+
+
+//        for (int i1=0;i1!=9;i1++) {
+//            for (int j1 = 0; j1 != 9; j1++) {
+//                Log.d("tempgrid", "i: " + i1 + " ; j: " + j1 + " ; value: " + tempGrid[i1][j1]);
+//            }
+//        }
+
+        tempGrid[cellpos[0]][cellpos[1]] = cellvalue;
+
+
+        int  i2=0, i3=0;
+
+        System.out.printf("*********cellvalue = %d ***********\n", cellvalue);
+
+        for (i2=0;i2!=9;i2++) {
+            for (i3=0;i3!=9;i3++) {
+                System.out.printf("%2d",tempGrid[i2][i3]);
+
+                if(i3%3 == 2)
+                    System.out.printf("  ");
+            }
+            System.out.println();
+            if(i2%3 == 2) System.out.println();
+
+        }
+
+        tempGrid[8][0] = 2;
+        tempGrid[0][8] = 2;
+
+
+        for (int i = 0; i < 9; i++) {
+
+            int[] row = new int[9];
+            int[] square = new int[9];
+            int[] column = tempGrid[i].clone();
+
+            for (int j = 0; j < 9; j ++) {
+                row[j] = tempGrid[j][i];
+                square[j] = tempGrid[(i / 3) * 3 + j / 3][i * 3 % 9 + j % 3];
+            }
+            if (!validate(column) || !validate(row) || !validate(square)){
+                 //Log.d("Value", "found :"+tempGrid[cellpos[0]][cellpos[1]]+" expected :" + tab[cellpos[0]][cellpos[1]]);
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private static boolean validate(int[] check) {
+        int i = 0;
+        Arrays.sort(check);
+        for (int number : check) {
+            if(number != 0) {
+                Log.d("Check", "number : " + number + " i: " + i);
+                if (number == ++i) {
+                    Log.d("Check", "bloqué à " + number + " i: " + i);
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public boolean isWon(Grille grille) {
+        int i, j;
+        int index=0;
+        int[][] tempGrid = new int[9][9];
+
+        for (i=0;i!=9;i++) {
+            for (j=0;j!=9;j++) {
+                tempGrid[i][j] = grille.getCellTab().get(index++).getValue();
+
+               if(tempGrid[i][j] == tab[i][j]) continue;
+                else return false;
+            }
+        }
+        return true;
+    }
+
 
     private int getBox(int row,int col){
         if(row <=3){
