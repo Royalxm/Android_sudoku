@@ -16,6 +16,7 @@ import android.view.SurfaceView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+
 /**
  * Created by cap-one on 09/11/15.
  */
@@ -30,11 +31,15 @@ public class SudokuView extends SurfaceView  implements SurfaceHolder.Callback, 
     private Cellule paintedCell;
     private SudokuGame game;
     private boolean  fp = false;
+    private int difficulty;
+    private MainActivity activity;
     private boolean paintCell = false;
 
     public SudokuView(Context context, AttributeSet attrs) {
 
         super(context, attrs);
+
+        activity = (MainActivity)context;
 
         // permet d'ecouter les surfaceChanged, surfaceCreated, surfaceDestroyed
         holder = getHolder();
@@ -64,7 +69,9 @@ public class SudokuView extends SurfaceView  implements SurfaceHolder.Callback, 
 
         grille.initGrid();
 
-        game.init(grille);
+
+        Toast.makeText(getContext(), "difficulty: "+difficulty, Toast.LENGTH_LONG).show();
+        game.init(grille, difficulty);
 
         linePaint = new Paint();
         linePaint.setColor(Color.BLACK);
@@ -183,9 +190,17 @@ public class SudokuView extends SurfaceView  implements SurfaceHolder.Callback, 
         }
     }
 
+
+    public void setDifficulty(int difficulty) {
+        this.difficulty = difficulty;
+    }
+
     public void clearCase() {
-        if(grille != null)
-            grille.getSelectedCell().setValue(0);
+        if(grille != null) {
+            Cellule cell = grille.getSelectedCell();
+            if(!cell.isLocked()) cell.setValue(0);
+        }
+
     }
 
     public void run() {

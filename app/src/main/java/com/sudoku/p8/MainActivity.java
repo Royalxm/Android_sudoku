@@ -1,17 +1,28 @@
 package com.sudoku.p8;
 
+import android.app.ActionBar;
 import android.app.Activity;
+import android.os.SystemClock;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Chronometer;
+import android.widget.SearchView;
 import android.widget.Toast;
+
+import java.util.Timer;
 
 public class MainActivity extends AppCompatActivity {
 
     private SudokuView SudokuView;
+    private int difficulty;
     private Button[] numpad;
     private Button clear;
+    private Chronometer timer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,6 +31,14 @@ public class MainActivity extends AppCompatActivity {
 
         SudokuView = (SudokuView)findViewById(R.id.SudokuView);
         SudokuView.setVisibility(View.VISIBLE);
+
+        difficulty = getIntent().getIntExtra("difficulty",0);
+
+        SudokuView.setDifficulty(difficulty);
+
+       // timer = (Chronometer) findViewById(R.id.chrono);
+
+        //timer.start();
 
         numpad = new Button[9];
 
@@ -53,5 +72,24 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+
+        MenuItem timerItem = menu.findItem(R.id.action_live_clock);
+        Chronometer timer = (Chronometer) MenuItemCompat.getActionView(timerItem);
+//        timer.setBase(SystemClock.elapsedRealtime());
+//        timer.start();
+        return true;
+    }
+
+    public void updateTitle(String text) {
+        setTitle(text);
+    }
+
+    public int getDifficulty() {
+
+        return this.difficulty;
+    }
 
 }
