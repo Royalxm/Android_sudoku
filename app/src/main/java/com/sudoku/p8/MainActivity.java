@@ -1,20 +1,16 @@
 package com.sudoku.p8;
 
-import android.app.ActionBar;
-import android.app.Activity;
-import android.os.SystemClock;
-import android.support.v4.view.MenuItemCompat;
-import android.support.v7.app.AppCompatActivity;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.SystemClock;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Chronometer;
-import android.widget.SearchView;
-import android.widget.Toast;
-
-import java.util.Timer;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -22,13 +18,15 @@ public class MainActivity extends AppCompatActivity {
     private int difficulty;
     private Button[] numpad;
     private Button clear;
-    private Chronometer timer;
+    private android.support.v7.app.ActionBar actionBar;
+    private Chronometer chrono;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        actionBar = getSupportActionBar();
         SudokuView = (SudokuView)findViewById(R.id.SudokuView);
         SudokuView.setVisibility(View.VISIBLE);
 
@@ -36,9 +34,22 @@ public class MainActivity extends AppCompatActivity {
 
         SudokuView.setDifficulty(difficulty);
 
-       // timer = (Chronometer) findViewById(R.id.chrono);
+        chrono = new Chronometer(this);
+        chrono.setVisibility(View.GONE);
+        actionBar.setCustomView(chrono);
+        actionBar.setDisplayShowCustomEnabled(true);
 
-        //timer.start();
+        chrono.setBase(SystemClock.elapsedRealtime());
+
+        chrono.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
+            @Override
+            public void onChronometerTick(Chronometer chronometer) {
+                chronometer.refreshDrawableState();
+                updateTitle(chronometer.getText().toString());
+            }
+        });
+
+        chrono.start();
 
         numpad = new Button[9];
 
@@ -72,15 +83,35 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
+    public void sudokuSolvedDialog() {
+            AlertDialog.Builder alert = new AlertDialog.Builder(this);
+            alert.setTitle(R.string.you_won);
+            alert.setMessage(R.string.solved_time+chrono.getText().toString());
+            alert.setPositiveButton("Super !", new DialogInterface.OnClickListener() {
+
+                public void onClick(DialogInterface dialog, int id) {
+                    dialog.dismiss();
+                }
+            });
+            alert.show();
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
 
-        MenuItem timerItem = menu.findItem(R.id.action_live_clock);
-        Chronometer timer = (Chronometer) MenuItemCompat.getActionView(timerItem);
-//        timer.setBase(SystemClock.elapsedRealtime());
-//        timer.start();
-        return true;
+
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+
+        return super.onOptionsItemSelected(item);
     }
 
     public void updateTitle(String text) {

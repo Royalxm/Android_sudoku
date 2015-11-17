@@ -1,8 +1,6 @@
 package com.sudoku.p8;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -13,7 +11,6 @@ import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 
@@ -69,8 +66,6 @@ public class SudokuView extends SurfaceView  implements SurfaceHolder.Callback, 
 
         grille.initGrid();
 
-
-        Toast.makeText(getContext(), "difficulty: "+difficulty, Toast.LENGTH_LONG).show();
         game.init(grille, difficulty);
 
         linePaint = new Paint();
@@ -158,25 +153,13 @@ public class SudokuView extends SurfaceView  implements SurfaceHolder.Callback, 
     private void nDraw(Canvas canvas) {
         canvas.drawRGB(255, 255, 255);
         if(game.isWon(grille)) {
-//            AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
-//            alert.setTitle("Vous avez gagné !");
-//            alert.setMessage("Vous avez résolu le sudoku en (temps) sec");
-//            alert.setPositiveButton("Super !", new DialogInterface.OnClickListener() {
-//
-//                public void onClick(DialogInterface dialog, int id) {
-//                    dialog.dismiss();
-//                }
-//            });
-//            alert.show();
-
-            Toast.makeText(getContext(), "Vous avez résolu le sudoku en (temps) sec !", Toast.LENGTH_LONG).show();
+            activity.sudokuSolvedDialog();
         }
 
         paintGrid(canvas);
         paintValues(canvas);
         paintCell(canvas);
     }
-
 
 
     public void getNum(int value) {
@@ -186,7 +169,7 @@ public class SudokuView extends SurfaceView  implements SurfaceHolder.Callback, 
                 if(!selectedCell.isLocked())
                     grille.getSelectedCell().setValue(value);
             }
-            else Toast.makeText(getContext(), "Selectionnez une case", Toast.LENGTH_LONG).show();
+            else Toast.makeText(getContext(), R.string.select_a_case , Toast.LENGTH_LONG).show();
         }
     }
 

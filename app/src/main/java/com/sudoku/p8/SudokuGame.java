@@ -133,7 +133,7 @@ public class SudokuGame {
                 if(tab2[i][j]!= 0) cell.setLocked(true);
                 cell.setValue(tab2[i][j]);
                 cell.setPos(i,j);
-               // Log.d("Value", "i:"+i+" j: "+j+" value: " + tab2[i][j]);
+                // Log.d("Value", "i:"+i+" j: "+j+" value: " + tab2[i][j]);
             }
         }
 
@@ -156,17 +156,17 @@ public class SudokuGame {
             }
         }
 
-        for (int i2=0;i2!=9;i2++) {
-            for (int i3=0;i3!=9;i3++) {
-                System.out.printf("%2d",tempGrid[i2][i3]);
-
-                if(i3%3 == 2)
-                    System.out.printf("  ");
-            }
-            System.out.println();
-            if(i2%3 == 2) System.out.println();
-
-        }
+//        for (int i2=0;i2!=9;i2++) {
+//            for (int i3=0;i3!=9;i3++) {
+//                System.out.printf("%2d",tempGrid[i2][i3]);
+//
+//                if(i3%3 == 2)
+//                    System.out.printf("  ");
+//            }
+//            System.out.println();
+//            if(i2%3 == 2) System.out.println();
+//
+//        }
         tempGrid[cellpos[0]][cellpos[1]] = cellvalue;
         int[] row = new int[9];
         int[] column = new int[9];
@@ -183,43 +183,43 @@ public class SudokuGame {
 
         }
 
-            for (int j = 0; j < 9; j++) {
+        for (int j = 0; j < 9; j++) {
 
 
 
-                if(!(((cellpos[1] / 3) * 3 + j % 3) == cellpos[1] && ((cellpos[0] / 3) * 3 + j / 3) == cellpos[0]))
-                {
-                  //  System.out.printf("%2d %2d et %d %d\n", (cellpos[0] / 3) * 3 + j / 3,(cellpos[1] / 3) * 3 + j % 3,cellpos[0],cellpos[1]);
-                    square[j] = tempGrid[(cellpos[0] / 3) * 3 + j / 3][(cellpos[1] / 3) * 3 + j % 3];
-                }
-
-
+            if(!(((cellpos[1] / 3) * 3 + j % 3) == cellpos[1] && ((cellpos[0] / 3) * 3 + j / 3) == cellpos[0]))
+            {
+                //  System.out.printf("%2d %2d et %d %d\n", (cellpos[0] / 3) * 3 + j / 3,(cellpos[1] / 3) * 3 + j % 3,cellpos[0],cellpos[1]);
+                square[j] = tempGrid[(cellpos[0] / 3) * 3 + j / 3][(cellpos[1] / 3) * 3 + j % 3];
             }
 
 
-            if ( !validate(square,cellvalue) || !validate(row,cellvalue) || !validate(column,cellvalue)){
-                 //Log.d("Value", "found :"+tempGrid[cellpos[0]][cellpos[1]]+" expected :" + tab[cellpos[0]][cellpos[1]]);
-                System.out.println();
-                return false;
-            }
-        System.out.println();
+        }
+
+
+        if ( !validate(square,cellvalue) || !validate(row,cellvalue) || !validate(column,cellvalue)){
+            //Log.d("Value", "found :"+tempGrid[cellpos[0]][cellpos[1]]+" expected :" + tab[cellpos[0]][cellpos[1]]);
+            //      System.out.println();
+            return false;
+        }
+        //System.out.println();
         return true;
     }
 
     private static boolean validate(int[] check,int cellval) {
 
-        System.out.println("chiffre : " + cellval);
+        // System.out.println("chiffre : " + cellval);
         for (int i3=0;i3<check.length;i3++) {
 
-                System.out.printf("%2d", check[i3]);
-               if(check[i3] == cellval)
-                  return false;
+            // System.out.printf("%2d", check[i3]);
+            if(check[i3] == cellval)
+                return false;
 
 
 
 
         }
-        System.out.println();
+        //System.out.println();
         return true;
     }
 
@@ -232,7 +232,7 @@ public class SudokuGame {
             for (j=0;j!=9;j++) {
                 tempGrid[i][j] = grille.getCellTab().get(index++).getValue();
 
-               if(tempGrid[i][j] == tab[i][j]) continue;
+                if(tempGrid[i][j] == tab[i][j]) continue;
                 else return false;
             }
         }

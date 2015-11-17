@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Sudoku</string>
+    <string name="reload">Reload</string>
+    <string name="select_a_case">Select a case</string>
+    <string name="you_won">You won !</string>
+    <string name="solved_time">You have solved the sudoku in </string>
+</resources>
