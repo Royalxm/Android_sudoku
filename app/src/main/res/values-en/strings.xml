@@ -5,4 +5,11 @@
     <string name="select_a_case">Select a case</string>
     <string name="you_won">You won !</string>
     <string name="solved_time">You have solved the sudoku in </string>
+    <string name="puzzle_inprogress">There is a puzzle in progress (%1s).\n Would you like to resume it or start a new one ?</string>
+    <string name="puzzle_inprogress_title">Puzzle in progress</string>
+    <string name="easy_mode">Easy</string>
+    <string name="medium_mode">Medium</string>
+    <string name="hard_mode">Hard</string>
+    <string name="resume_game">Resume</string>
+    <string name="new_game">New</string>
 </resources>

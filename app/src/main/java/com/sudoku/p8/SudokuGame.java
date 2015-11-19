@@ -140,6 +140,29 @@ public class SudokuGame {
     }
 
 
+    public void printGrille(Grille grille) {
+        int[][] tempGrid = new int[9][9];
+        int index = 0;
+
+        for (int i1=0;i1!=9;i1++) {
+            for (int j1 = 0; j1 != 9; j1++) {
+                tempGrid[i1][j1] = grille.getCellTab().get(index++).getValue();
+            }
+        }
+
+                for (int i2=0;i2!=9;i2++) {
+            for (int i3=0;i3!=9;i3++) {
+                System.out.printf("%2d",tempGrid[i2][i3]);
+
+                if(i3%3 == 2)
+                    System.out.printf("  ");
+            }
+            System.out.println();
+            if(i2%3 == 2) System.out.println();
+
+        }
+    }
+
     public int gridAt(int i, int j) {
         return tab[i][j];
     }
@@ -197,7 +220,7 @@ public class SudokuGame {
         }
 
 
-        if ( !validate(square,cellvalue) || !validate(row,cellvalue) || !validate(column,cellvalue)){
+        if ( !validate(square,cellvalue) || !validate(row,cellvalue) ||!validate(column,cellvalue)){
             //Log.d("Value", "found :"+tempGrid[cellpos[0]][cellpos[1]]+" expected :" + tab[cellpos[0]][cellpos[1]]);
             //      System.out.println();
             return false;
@@ -208,16 +231,12 @@ public class SudokuGame {
 
     private static boolean validate(int[] check,int cellval) {
 
-        // System.out.println("chiffre : " + cellval);
+         //System.out.println("chiffre : " + cellval);
         for (int i3=0;i3<check.length;i3++) {
 
-            // System.out.printf("%2d", check[i3]);
+             //System.out.printf("%2d", check[i3]);
             if(check[i3] == cellval)
                 return false;
-
-
-
-
         }
         //System.out.println();
         return true;

@@ -23,7 +23,7 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Reprendre"
+            android:text="@string/resume_game"
             android:id="@+id/buttonReprendre"
             android:layout_marginBottom="10dp"
             android:visibility="gone"
@@ -31,14 +31,14 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Easy"
+            android:text="@string/easy_mode"
             android:id="@+id/buttonEasy"
             android:layout_marginBottom="10dp"
             android:layout_gravity="center_horizontal" />
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Medium"
+            android:text="@string/medium_mode"
             android:id="@+id/buttonMedium"
             android:layout_marginBottom="10dp"
             android:layout_gravity="center_horizontal" />
@@ -46,7 +46,7 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Hard"
+            android:text="@string/hard_mode"
             android:id="@+id/buttonHard"
             android:layout_marginBottom="50dp"
             android:layout_gravity="center_horizontal" />

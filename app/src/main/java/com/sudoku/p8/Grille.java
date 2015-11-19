@@ -67,4 +67,39 @@ public class Grille {
     public Cellule getSelectedCell() {
         return this.selectedCell;
     }
+
+    public void restoreGrille(String grille) {
+        String[] cells = grille.split(";");
+        int index = 0;
+        int i, j = 0;
+
+       for(String cellData : cells) {
+           Log.d("SPLIT", cellData);
+
+           String[] cell = cellData.split(":");
+            Cellule cellule =  celltab.get(index);
+
+            cellule.setValue(Integer.parseInt(cell[0]));
+           if(cell[1].equals("locked"))
+               cellule.setLocked(true);
+           cellule.setPos(index%9, (int)index/9);
+           Log.d("SPLIT/CELLVALUE", "value "+cellule.getValue()+" locked? :"+cellule.isLocked()
+                   +"pos x"+cellule.getPos()[0]+" posy"+cellule.getPos()[1]);
+           index++;
+       }
+
+    }
+
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        for(Cellule cell : celltab) {
+            if(cell.isLocked()) {
+                sb.append(cell.getValue()).append(":locked;");
+            }
+            if(cell.getValue()==0) sb.append(cell.getValue()).append(":vide;");
+            if(!cell.isLocked() && cell.getValue()!=0) sb.append(cell.getValue()).append(":userval;");
+        }
+
+        return sb.toString();
+    }
 }

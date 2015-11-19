@@ -66,7 +66,11 @@ public class SudokuView extends SurfaceView  implements SurfaceHolder.Callback, 
 
         grille.initGrid();
 
-        game.init(grille, difficulty);
+        if(!activity.resumeGame)
+            game.init(grille, difficulty);
+        else grille.restoreGrille(activity.savedGrille);
+
+        game.printGrille(grille);
 
         linePaint = new Paint();
         linePaint.setColor(Color.BLACK);
@@ -166,8 +170,10 @@ public class SudokuView extends SurfaceView  implements SurfaceHolder.Callback, 
         if(grille != null) {
             Cellule selectedCell = grille.getSelectedCell();
             if(selectedCell != null) {
-                if(!selectedCell.isLocked())
+                if(!selectedCell.isLocked()){
                     grille.getSelectedCell().setValue(value);
+                    Log.d("setval", "setted value : "+grille.getSelectedCell().getValue());
+                }
             }
             else Toast.makeText(getContext(), R.string.select_a_case , Toast.LENGTH_LONG).show();
         }
@@ -181,9 +187,15 @@ public class SudokuView extends SurfaceView  implements SurfaceHolder.Callback, 
     public void clearCase() {
         if(grille != null) {
             Cellule cell = grille.getSelectedCell();
-            if(!cell.isLocked()) cell.setValue(0);
+            if(cell != null)
+                if(!cell.isLocked()) cell.setValue(0);
         }
 
+    }
+
+
+    public String saveGrille() {
+        return grille.toString();
     }
 
     public void run() {
