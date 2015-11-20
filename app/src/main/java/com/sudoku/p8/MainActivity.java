@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,14 +18,17 @@ public class MainActivity extends AppCompatActivity {
 
     private SudokuView SudokuView;
     private int difficulty;
+    private String difficultyS;
     private Button[] numpad;
     private Button clear;
     private android.support.v7.app.ActionBar actionBar;
     private Chronometer chrono;
+    private long lastPause;
     private boolean gameWon = false;
     public boolean resumeGame;
     public String savedGrille;
     private SudokuPrefs prefs;
+    private boolean chronoStopped = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,11 +41,20 @@ public class MainActivity extends AppCompatActivity {
 
         prefs = new SudokuPrefs(this);
 
-        difficulty = getIntent().getIntExtra("difficulty", 0);
-
         resumeGame = getIntent().getBooleanExtra("resumeGame",false);
 
-        if(resumeGame) savedGrille = prefs.getStringPreference("grilleJeuEnCours");
+        if(resumeGame) {
+            savedGrille = prefs.resumeSudoku();
+            difficulty = prefs.getSavedDiff();
+        }
+        else difficulty = getIntent().getIntExtra("difficulty", 0);
+
+        switch(difficulty) {
+            case 2 : difficultyS=getString(R.string.easy_mode); break;
+            case 3 : difficultyS=getString(R.string.medium_mode); break;
+            case 5 : difficultyS=getString(R.string.hard_mode); break;
+            default : break;
+        }
 
         SudokuView.setDifficulty(difficulty);
 
@@ -50,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
         actionBar.setCustomView(chrono);
         actionBar.setDisplayShowCustomEnabled(true);
 
-        chrono.setBase(SystemClock.elapsedRealtime());
+       if(!resumeGame) chrono.setBase(SystemClock.elapsedRealtime());
 
         chrono.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
             @Override
@@ -95,8 +108,28 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void sudokuSolvedDialog() {
+    @Override
+    protected void onPause() {
+        super.onPause();
 
+        lastPause = SystemClock.elapsedRealtime();
+        chrono.stop();
+        chronoStopped = true;
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if(chronoStopped) {
+            chrono.setBase(chrono.getBase() + SystemClock.elapsedRealtime() - lastPause);
+            chrono.start();
+        }
+    }
+
+    public void sudokuSolvedDialog() {
+            chrono.stop();
             gameWon = true;
 
             AlertDialog.Builder alert = new AlertDialog.Builder(this);
@@ -141,7 +174,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void updateTitle(String text) {
-        setTitle(text);
+        setTitle(difficultyS+" - "+text);
     }
 
     public int getDifficulty() {
@@ -149,16 +182,47 @@ public class MainActivity extends AppCompatActivity {
         return this.difficulty;
     }
 
+    public void restoreTimer() {
+        Log.d("restored time", "on restored time");
+        String[] cells = savedGrille.split(";");
+        for(String cellData : cells) {
+            String[] cell = cellData.split("=");
+
+            if(cell[1].equals("time")) {
+                String[] time = cell[0].split(":");
+                int min = Integer.parseInt(time[0]);
+                int sec = Integer.parseInt(time[1]);
+                chrono.setBase(SystemClock.elapsedRealtime() - (min * 60000 + sec * 1000));
+                chrono.setText(cell[0]);
+                Log.d("restored time", "restored time : " +cell[0]+" ("+(SystemClock.elapsedRealtime() - (min * 60000 + sec * 1000))+")");
+                savedGrille = savedGrille.substring(0, savedGrille.length()-cellData.length()-1);
+                //return;
+            }
+        }
+
+    }
+
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
 
+        chrono.stop();
+
         if(!gameWon) {
-            prefs.saveStringPreference("grilleJeuEnCours", SudokuView.saveGrille());
-            prefs.saveBooleanPreference("jeuEnCours", true);
+            switch(difficulty) {
+                case 2 :  prefs.saveSudoku(SudokuView.saveGrille(chrono.getText().toString()), "easy");
+                    break;
+                case 3 :
+                    prefs.saveSudoku(SudokuView.saveGrille(chrono.getText().toString()), "medium");
+                    break;
+                case 5 :
+                    prefs.saveSudoku(SudokuView.saveGrille(chrono.getText().toString()), "hard");
+                    break;
+                default : break;
+            }
         }
 
-        Toast.makeText(this, "Sudoku sauvegardé", Toast.LENGTH_SHORT).show();
+       // Toast.makeText(this, "Sudoku sauvegardé", Toast.LENGTH_SHORT).show();
     }
 }

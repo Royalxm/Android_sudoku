@@ -66,9 +66,15 @@ public class SudokuView extends SurfaceView  implements SurfaceHolder.Callback, 
 
         grille.initGrid();
 
-        if(!activity.resumeGame)
-            game.init(grille, difficulty);
-        else grille.restoreGrille(activity.savedGrille);
+        //if(!activity.resumeGame)
+        game.init(grille, difficulty);
+        //else
+        //
+        if(activity.resumeGame) {
+            activity.restoreTimer();
+            grille.restoreGrille(activity.savedGrille);
+        }
+
 
         game.printGrille(grille);
 
@@ -194,8 +200,8 @@ public class SudokuView extends SurfaceView  implements SurfaceHolder.Callback, 
     }
 
 
-    public String saveGrille() {
-        return grille.toString();
+    public String saveGrille(String time) {
+        return grille.toString(time);
     }
 
     public void run() {

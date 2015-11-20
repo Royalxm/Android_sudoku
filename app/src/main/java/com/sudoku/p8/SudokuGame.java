@@ -150,7 +150,9 @@ public class SudokuGame {
             }
         }
 
-                for (int i2=0;i2!=9;i2++) {
+        System.out.println();
+
+          for (int i2=0;i2!=9;i2++) {
             for (int i3=0;i3!=9;i3++) {
                 System.out.printf("%2d",tempGrid[i2][i3]);
 

@@ -34,7 +34,7 @@ public class MenuActivity extends Activity {
         prefs = new SudokuPrefs(this);
 
         //Jeu en cours
-        jeuEnCours = prefs.getBooleanPreference("jeuEnCours");
+        jeuEnCours = prefs.canResume();
 
         if(jeuEnCours) reprendre.setVisibility(View.VISIBLE);
         else reprendre.setVisibility(View.GONE);
@@ -44,7 +44,7 @@ public class MenuActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MenuActivity.this, MainActivity.class);
-                intent.putExtra("resumeGame", true);
+                intent.putExtra("resumeGame", jeuEnCours);
                 startActivity(intent);
             }
         });
@@ -96,56 +96,60 @@ public class MenuActivity extends Activity {
     protected void onStart() {
         super.onStart();
 
-        Toast.makeText(this, "START", Toast.LENGTH_SHORT).show();
-
-        //Jeu en cours
-        jeuEnCours = prefs.getBooleanPreference("jeuEnCours");
+         //Jeu en cours
+        jeuEnCours = prefs.canResume();
 
         if(jeuEnCours) reprendre.setVisibility(View.VISIBLE);
         else reprendre.setVisibility(View.GONE);
     }
 
-//    @Override
-//    protected void onNewIntent(Intent intent) {
-//        super.onNewIntent(intent);
-//
-//        Toast.makeText(this, "newInt", Toast.LENGTH_SHORT).show();
-//
-//        //Jeu en cours
-//        jeuEnCours = prefs.getBooleanPreference("jeuEnCours");
-//
-//        if(jeuEnCours) reprendre.setVisibility(View.VISIBLE);
-//        else reprendre.setVisibility(View.GONE);
-//
-//    }
 
-    private void jeuenCoursPopup(final String difficulty) {
+
+    private void jeuenCoursPopup(final String difficultyButton) {
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
         alert.setTitle(R.string.puzzle_inprogress_title);
-        alert.setMessage(getString(R.string.puzzle_inprogress, difficulty));
+        alert.setMessage(getString(R.string.puzzle_inprogress, difficultyButton));
         alert.setPositiveButton(getString(R.string.resume_game), new DialogInterface.OnClickListener() {
 
             public void onClick(DialogInterface dialog, int id) {
                 dialog.dismiss();
 
-                Log.d("SAVEDGRILLE", prefs.getStringPreference("grilleJeuEnCours"));
+                if (difficultyButton.equals(getString(R.string.easy_mode))) {
+                    prefs.saveStringPreference(SudokuPrefs.RESUME_DIFF, "easy");
+                    Intent intent = new Intent(MenuActivity.this, MainActivity.class);
+                    intent.putExtra("resumeGame", jeuEnCours);
+                    startActivity(intent);
+                }
+                else if(difficultyButton.equals(getString(R.string.medium_mode))) {
+                    prefs.saveStringPreference(SudokuPrefs.RESUME_DIFF, "medium");
+                    Intent intent = new Intent(MenuActivity.this, MainActivity.class);
+                    intent.putExtra("resumeGame", jeuEnCours);
+                    startActivity(intent);
+                }
+                else if(difficultyButton.equals(getString(R.string.hard_mode))) {
+                    prefs.saveStringPreference(SudokuPrefs.RESUME_DIFF, "hard");
+                    Intent intent = new Intent(MenuActivity.this, MainActivity.class);
+                    intent.putExtra("resumeGame", jeuEnCours);
+                    startActivity(intent);
+                }
+
             }
         });
         alert.setNegativeButton(getString(R.string.new_game), new DialogInterface.OnClickListener() {
 
             public void onClick(DialogInterface dialog, int id) {
                 dialog.dismiss();
-                if (difficulty.equals(getString(R.string.easy_mode))) {
+                if (difficultyButton.equals(getString(R.string.easy_mode))) {
                     Intent intent = new Intent(MenuActivity.this, MainActivity.class);
                     intent.putExtra("difficulty", 2);
                     startActivity(intent);
                 }
-                else if(difficulty.equals(getString(R.string.medium_mode))) {
+                else if(difficultyButton.equals(getString(R.string.medium_mode))) {
                     Intent intent = new Intent(MenuActivity.this, MainActivity.class);
                     intent.putExtra("difficulty", 3);
                     startActivity(intent);
                 }
-                else if(difficulty.equals(getString(R.string.hard_mode))) {
+                else if(difficultyButton.equals(getString(R.string.hard_mode))) {
                     Intent intent = new Intent(MenuActivity.this, MainActivity.class);
                     intent.putExtra("difficulty", 5);
                     startActivity(intent);
