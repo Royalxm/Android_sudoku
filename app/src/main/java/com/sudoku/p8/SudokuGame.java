@@ -17,9 +17,9 @@ public class SudokuGame {
     static ArrayList rows[];
     static ArrayList boxes[];
     static int board[] = new int[1+(no*no)];
-    static int[][] tab = new int[9][9];
+    public static int[][] tab = new int[9][9];
     static int grid[][] = new int[9][9];
-
+    int gridWithZeros[][] = new int[9][9];
     public SudokuGame() {
 
     }
@@ -51,7 +51,7 @@ public class SudokuGame {
         i4=1;
         for (i2=0;i2!=9;i2++) {
             for (i3=0;i3!=9;i3++) {
-                tab2[i2][i3] = tab[i2][i3];
+                gridWithZeros[i2][i3] = tab[i2][i3];
             }
         }
         int max,min;
@@ -83,22 +83,22 @@ public class SudokuGame {
                 int i = randomGenerator.nextInt(max2 - min2 + 1) + min2;
                 int j = randomGenerator.nextInt(9);
                 save1 = tab2[i][j];
-                tab2[i][j] = 0;
+                gridWithZeros[i][j] = 0;
                 i2 = randomGenerator.nextInt(max2 - min2 + 1) + min2;
                 int  j2 = randomGenerator.nextInt(9);
-                save2 = tab2[i2][j2];
-                tab2[i2][j2] = 0;
+                save2 = gridWithZeros[i2][j2];
+                gridWithZeros[i2][j2] = 0;
 
                 for (i3=0;i3!=9;i3++) {
                     for (i4=0;i4!=9;i4++) {
-                        tab3[i3][i4] = tab2[i3][i4];
+                        grid[i3][i4] = gridWithZeros[i3][i4];
                     }
                 }
 
-                if (!fillSudoku(tab3, 0, 0)) {
+                if (!fillSudoku(grid, 0, 0)) {
                     // (i, j) was not a good choice!
-                    tab2[i][j] = save1;
-                    tab2[i2][j2] = save2;
+                    gridWithZeros[i][j] = save1;
+                    gridWithZeros[i2][j2] = save2;
 
                 }
                 else {
@@ -115,7 +115,7 @@ public class SudokuGame {
 
         for (i2=0;i2!=9;i2++) {
             for (i3=0;i3!=9;i3++) {
-                System.out.printf("%2d",tab3[i2][i3]);
+                System.out.printf("%2d",grid[i2][i3]);
 
                 if(i3%3 == 2)
                     System.out.printf("  ");
@@ -130,8 +130,8 @@ public class SudokuGame {
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j ++) {
                 Cellule cell = grille.getCellTab().get(index++);
-                if(tab2[i][j]!= 0) cell.setLocked(true);
-                cell.setValue(tab2[i][j]);
+                if(gridWithZeros[i][j]!= 0) cell.setLocked(true);
+                cell.setValue(gridWithZeros[i][j]);
                 cell.setPos(i,j);
                 // Log.d("Value", "i:"+i+" j: "+j+" value: " + tab2[i][j]);
             }
@@ -170,6 +170,33 @@ public class SudokuGame {
     }
 
 
+
+    public void solveGrille(Grille grille) {
+        int index = 0;
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j ++) {
+                Cellule cell = grille.getCellTab().get(index++);
+                if(grid[i][j]!= 0) cell.setLocked(true);
+                cell.setValue(grid[i][j]);
+                cell.setPos(i,j);
+            }
+        }
+    }
+
+
+    public void resetGrille(Grille grille) {
+        int index = 0;
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j ++) {
+                Cellule cell = grille.getCellTab().get(index++);
+                if(gridWithZeros[i][j]!= 0) cell.setLocked(true);
+                cell.setValue(gridWithZeros[i][j]);
+                cell.setPos(i,j);
+            }
+        }
+    }
+
+
     public boolean checkSudoku2(Grille grille, int[] cellpos, int cellvalue) {
 
         int[][] tempGrid = new int[9][9];
@@ -180,17 +207,20 @@ public class SudokuGame {
                 tempGrid[i1][j1] = grille.getCellTab().get(index++).getValue();
             }
         }
-
-//        for (int i2=0;i2!=9;i2++) {
-//            for (int i3=0;i3!=9;i3++) {
-//                System.out.printf("%2d",tempGrid[i2][i3]);
+//        if(a == 0) {
+//            System.out.println("new tab : ");
+//            for (int i2 = 0; i2 != 9; i2++) {
+//                for (int i3 = 0; i3 != 9; i3++) {
+//                    System.out.printf("%2d", tempGrid[i2][i3]);
 //
-//                if(i3%3 == 2)
-//                    System.out.printf("  ");
+//                    if (i3 % 3 == 2)
+//                        System.out.printf("  ");
+//                }
+//                System.out.println();
+//                if (i2 % 3 == 2) System.out.println();
+//
 //            }
-//            System.out.println();
-//            if(i2%3 == 2) System.out.println();
-//
+//        a = 1;
 //        }
         tempGrid[cellpos[0]][cellpos[1]] = cellvalue;
         int[] row = new int[9];
@@ -224,7 +254,7 @@ public class SudokuGame {
 
         if ( !validate(square,cellvalue) || !validate(row,cellvalue) ||!validate(column,cellvalue)){
             //Log.d("Value", "found :"+tempGrid[cellpos[0]][cellpos[1]]+" expected :" + tab[cellpos[0]][cellpos[1]]);
-            //      System.out.println();
+            //System.out.println("rouge");
             return false;
         }
         //System.out.println();
@@ -383,7 +413,7 @@ public class SudokuGame {
         return true;
     }
 
-    private boolean fillSudoku(int puzzle[][], int row, int col)
+    public boolean fillSudoku(int puzzle[][], int row, int col)
     {
         int i;
         if(row<9 && col<9)

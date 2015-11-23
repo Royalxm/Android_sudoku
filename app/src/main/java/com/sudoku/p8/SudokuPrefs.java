@@ -65,6 +65,20 @@ public class SudokuPrefs {
         prefsEditor.commit();
     }
 
+    public void removeSudoku(String difficulty) {
+        if (difficulty.equals("easy")) {
+            saveStringPreference(GRILLE_EASY, null);
+        } else if (difficulty.equals("medium")) {
+            saveStringPreference(GRILLE_MED, null);
+            saveStringPreference(RESUME_DIFF, null);
+            saveBooleanPreference(IS_MEDIUM, false);
+        } else if (difficulty.equals("hard")) {
+            saveStringPreference(GRILLE_HARD, null);
+            saveStringPreference(RESUME_DIFF, null);
+            saveBooleanPreference(IS_HARD, false);
+        }
+    }
+
 
     public void saveSudoku(String grille, String difficulty) {
         if (difficulty.equals("easy")) {

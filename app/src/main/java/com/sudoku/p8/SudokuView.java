@@ -72,11 +72,11 @@ public class SudokuView extends SurfaceView  implements SurfaceHolder.Callback, 
         //
         if(activity.resumeGame) {
             activity.restoreTimer();
-            grille.restoreGrille(activity.savedGrille);
+            grille.restoreGrille(activity.savedGrille, game);
         }
 
 
-        game.printGrille(grille);
+       // game.printGrille(grille);
 
         linePaint = new Paint();
         linePaint.setColor(Color.BLACK);
@@ -126,6 +126,7 @@ public class SudokuView extends SurfaceView  implements SurfaceHolder.Callback, 
     }
 
 
+
     private void paintValues(Canvas canvas) {
         Paint paint = new Paint();
         paint.setTextAlign(Paint.Align.CENTER);
@@ -136,6 +137,7 @@ public class SudokuView extends SurfaceView  implements SurfaceHolder.Callback, 
         for(Cellule cell : grille.getCellTab()) {
            // Log.d("Cell Value", "Cell n°+"+i+" : "+cell.getValue());
             paint.getTextBounds(String.valueOf(cell.getValue()), 0, 1, bounds);
+
 
             paint.setColor(Color.BLACK);
 
@@ -204,6 +206,14 @@ public class SudokuView extends SurfaceView  implements SurfaceHolder.Callback, 
         return grille.toString(time);
     }
 
+    public void reset() {
+        game.resetGrille(grille);
+    }
+
+    public void solve() {
+        game.solveGrille(grille);
+    }
+
     public void run() {
         Canvas c = null;
         while (in) {
@@ -243,6 +253,7 @@ public class SudokuView extends SurfaceView  implements SurfaceHolder.Callback, 
     public void surfaceDestroyed(SurfaceHolder holder) {
         Log.i("-> FCT <-", "surfaceDestroyed");
     }
+
 
 
     @Override

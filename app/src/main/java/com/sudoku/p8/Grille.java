@@ -68,8 +68,9 @@ public class Grille {
         return this.selectedCell;
     }
 
-    public void restoreGrille(String grille) {
+    public void restoreGrille(String grille, SudokuGame game) {
         String[] cells = grille.split(";");
+        int[][] tempGrid = new int[9][9];
         int index = 0;
         int i, j = 0;
 
@@ -84,12 +85,29 @@ public class Grille {
 
            if(cell[1].equals("locked"))
                cellule.setLocked(true);
-           cellule.setPos(index%9, (int)index/9);
-           Log.d("SPLIT/CELLVALUE", "value "+cellule.getValue()+" locked? :"+cellule.isLocked()
-                   +"pos x"+cellule.getPos()[0]+" posy"+cellule.getPos()[1]);
+           cellule.setPos((int)index/9, index%9);
+           game.tab[(int)index/9][index%9] = cellule.getValue();
+//           Log.d("SPLIT/CELLVALUE", "value " + cellule.getValue() + " locked? :" + cellule.isLocked()
+//                   + "pos x" + cellule.getPos()[0] + " posy" + cellule.getPos()[1]);
 
            index++;
        }
+
+        game.fillSudoku(game.tab, 0, 0);
+
+//        System.out.println("RESTOREGRILLE");
+//            for (int i2 = 0; i2 != 9; i2++) {
+//                for (int i3 = 0; i3 != 9; i3++) {
+//                    System.out.printf("%2d", game.tab[i2][i3]);
+//
+//                    if (i3 % 3 == 2)
+//                        System.out.printf("  ");
+//                }
+//                System.out.println();
+//                if (i2 % 3 == 2) System.out.println();
+//
+//            }
+//        System.out.println("FINRESTOREGRILLE");
 
     }
 

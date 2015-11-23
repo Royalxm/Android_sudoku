@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Sudoku</string>
-    <string name="reload">Reload</string>
+    <string name="reload">Reset</string>
     <string name="select_a_case">Select a case</string>
     <string name="you_won">You won !</string>
     <string name="solved_time">You have solved the sudoku in </string>
@@ -12,4 +12,10 @@
     <string name="hard_mode">Hard</string>
     <string name="resume_game">Resume</string>
     <string name="new_game">New</string>
+    <string name="reload_confirm">Would yo like to reset the puzzle ?</string>
+    <string name="reload_confirm_title">Reset the puzzle</string>
+    <string name="cancel">Cancel</string>
+    <string name="validate_confirm">Would you like to solve the sudoku ?</string>
+    <string name="validate_title">Solve the sudoku</string>
+    <string name="validate">Solve</string>
 </resources>

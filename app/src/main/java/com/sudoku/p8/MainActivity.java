@@ -11,11 +11,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Chronometer;
-import android.widget.TextView;
-import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
+    private SudokuGame sudokuGame;
     private SudokuView SudokuView;
     private int difficulty;
     private String difficultyS;
@@ -132,16 +131,18 @@ public class MainActivity extends AppCompatActivity {
             chrono.stop();
             gameWon = true;
 
-            AlertDialog.Builder alert = new AlertDialog.Builder(this);
-            alert.setTitle(R.string.you_won);
-            alert.setMessage(getString(R.string.solved_time)+chrono.getText().toString());
-            alert.setPositiveButton("Super !", new DialogInterface.OnClickListener() {
+           // prefs.removeSudoku(difficultyS.toLowerCase());
 
-                public void onClick(DialogInterface dialog, int id) {
-                    dialog.dismiss();
-                }
-            });
-            alert.show();
+//            AlertDialog.Builder alert = new AlertDialog.Builder(this);
+//            alert.setTitle(R.string.you_won);
+//            alert.setMessage(getString(R.string.solved_time)+chrono.getText().toString());
+//            alert.setPositiveButton("Super !", new DialogInterface.OnClickListener() {
+//
+//                public void onClick(DialogInterface dialog, int id) {
+//                    dialog.dismiss();
+//                }
+//            });
+//            alert.show();
     }
 
     @Override
@@ -158,16 +159,46 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.reload:
                 AlertDialog.Builder alert = new AlertDialog.Builder(this);
-                alert.setTitle(R.string.you_won);
-                alert.setMessage(getString(R.string.solved_time) + " "+chrono.getText().toString());
-                alert.setPositiveButton("Super !", new DialogInterface.OnClickListener() {
+                alert.setTitle(R.string.reload_confirm_title);
+                alert.setMessage(getString(R.string.reload_confirm));
+                alert.setPositiveButton(R.string.reload, new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog, int id) {
+                        SudokuView.reset();
+                    }
+                });
+
+                alert.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.dismiss();
+
                     }
                 });
                 alert.show();
                 return true;
+
+            case R.id.validate_title:
+                AlertDialog.Builder alert2 = new AlertDialog.Builder(this);
+                alert2.setTitle(R.string.validate_title);
+                alert2.setMessage(getString(R.string.validate_confirm));
+                alert2.setPositiveButton(R.string.validate, new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog, int id) {
+                        SudokuView.solve();
+                    }
+                });
+
+                alert2.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.dismiss();
+
+                    }
+                });
+                alert2.show();
+                return true;
+
         }
 
         return super.onOptionsItemSelected(item);
@@ -209,7 +240,7 @@ public class MainActivity extends AppCompatActivity {
 
         chrono.stop();
 
-        if(!gameWon) {
+        //if(!gameWon) {
             switch(difficulty) {
                 case 2 :  prefs.saveSudoku(SudokuView.saveGrille(chrono.getText().toString()), "easy");
                     break;
@@ -221,7 +252,7 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 default : break;
             }
-        }
+       // }
 
        // Toast.makeText(this, "Sudoku sauvegardé", Toast.LENGTH_SHORT).show();
     }
