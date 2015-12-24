@@ -60,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
         chrono = new Chronometer(this);
         chrono.setVisibility(View.GONE);
         actionBar.setCustomView(chrono);
+        actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setDisplayShowCustomEnabled(true);
 
        if(!resumeGame) chrono.setBase(SystemClock.elapsedRealtime());
