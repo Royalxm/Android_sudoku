@@ -3,6 +3,7 @@ package com.sudoku.p8;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,7 +15,7 @@ import android.widget.Toast;
 
 public class MenuActivity extends Activity {
 
-    Button reprendre, easy, medium, hard, options, about;
+    Button reprendre, easy, medium, hard, options, scores, about;
     SudokuPrefs prefs;
     private int currentLevel;
     private boolean jeuEnCours;
@@ -29,9 +30,12 @@ public class MenuActivity extends Activity {
         medium = (Button) findViewById(R.id.buttonMedium);
         hard = (Button) findViewById(R.id.buttonHard);
         options = (Button) findViewById(R.id.buttonOptions);
+        scores = (Button) findViewById(R.id.buttonScore);
         about = (Button) findViewById(R.id.buttonAbout);
 
         prefs = new SudokuPrefs(this);
+
+        Typeface font = Typeface.createFromAsset(getAssets(), "fonts/century-gothic.ttf");
 
         //Jeu en cours
         jeuEnCours = prefs.canResume();
@@ -39,6 +43,13 @@ public class MenuActivity extends Activity {
         if(jeuEnCours) reprendre.setVisibility(View.VISIBLE);
         else reprendre.setVisibility(View.GONE);
 
+        reprendre.setTypeface(font, Typeface.BOLD);
+        easy.setTypeface(font, Typeface.BOLD);
+        medium.setTypeface(font, Typeface.BOLD);
+        hard.setTypeface(font, Typeface.BOLD);
+        options.setTypeface(font, Typeface.BOLD);
+        scores.setTypeface(font, Typeface.BOLD);
+        about.setTypeface(font, Typeface.BOLD);
 
         reprendre.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -46,6 +57,14 @@ public class MenuActivity extends Activity {
                 Intent intent = new Intent(MenuActivity.this, MainActivity.class);
                 intent.putExtra("resumeGame", jeuEnCours);
                 startActivity(intent);
+            }
+        });
+
+        options.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                Intent intent = new Intent(MenuActivity.this, SettingsActivity.class);
+//                startActivity(intent);
             }
         });
 
