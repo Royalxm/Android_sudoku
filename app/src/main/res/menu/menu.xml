@@ -9,7 +9,7 @@
         app:showAsAction="ifRoom"/>
 
     <item android:id="@+id/validate_title"
-        android:icon="@drawable/ic_check_circle_white_36dp"
+        android:icon="@drawable/ic_check_circle_white_24dp"
         android:title="@string/validate"
         app:showAsAction="ifRoom"/>
 

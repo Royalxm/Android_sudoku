@@ -5,7 +5,7 @@
     <string name="select_a_case">Selectionnez une case</string>
     <string name="you_won">Vous avez gagné !</string>
     <string name="solved_time">Vous avez résolu le sudoku en </string>
-    <string name="puzzle_inprogress">Il y a un puzzle en cours (%1s).\n\nVoulez-vous reprendre la partie ou en demarrer une nouvelle ?</string>
+    <string name="puzzle_inprogress">Il y a un puzzle en cours (%1s).\n Voulez-vous reprendre la partie ou en demarrer une nouvelle ?</string>
     <string name="puzzle_inprogress_title">Jeu en cours</string>
     <string name="easy_mode">Facile</string>
     <string name="medium_mode">Medium</string>
