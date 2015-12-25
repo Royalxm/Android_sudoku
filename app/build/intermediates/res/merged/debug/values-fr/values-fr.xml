@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- From: file:/home/cap-one/M1/Android/Sudoku/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.1.0/res/values-fr/values-fr.xml -->
+    <!-- From: file:/Users/Royal/GitHub/Android_sudoku/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.1.0/res/values-fr/values-fr.xml -->
     <eat-comment/>
     <string msgid="4600421777120114993" name="abc_action_bar_home_description">"Revenir à l\'accueil"</string>
     <string msgid="1397052879051804371" name="abc_action_bar_home_description_format">"%1$s, %2$s"</string>
@@ -21,5 +21,29 @@
     <string msgid="3421042268587513524" name="abc_shareactionprovider_share_with">"Partager avec"</string>
     <string msgid="7165123711973476752" name="abc_shareactionprovider_share_with_application">"Partager avec %s"</string>
     <string msgid="1603543279005712093" name="abc_toolbar_collapse_description">"Réduire"</string>
+    <!-- From: file:/Users/Royal/GitHub/Android_sudoku/app/src/main/res/values-fr/strings.xml -->
+    <eat-comment/>
+    <string name="app_name">Sudoku</string>
+    <string name="cancel">Annuler</string>
+    <string name="easy_mode">Facile</string>
+    <string name="hard_mode">Difficile</string>
+    <string name="medium_mode">Medium</string>
+    <string name="new_game">Nouvelle</string>
+    <string name="puzzle_inprogress">Il y a un puzzle en cours (%1s).\n\nVoulez-vous reprendre la partie ou en demarrer une nouvelle ?</string>
+    <string name="puzzle_inprogress_title">Jeu en cours</string>
+    <string name="reload">Recharger</string>
+    <string name="reload_confirm">Voulez-vous recharger le puzzle ?</string>
+    <string name="reload_confirm_title">Recharger le puzzle</string>
+    <string name="resume_game">Reprendre</string>
+    <string name="select_a_case">Selectionnez une case</string>
+    <string name="solved_time">Vous avez résolu le sudoku en </string>
+    <!-- From: file:/Users/Royal/GitHub/Android_sudoku/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.1.0/res/values-fr/values-fr.xml -->
+    <eat-comment/>
     <string msgid="2869576371154716097" name="status_bar_notification_info_overflow">">999"</string>
+    <!-- From: file:/Users/Royal/GitHub/Android_sudoku/app/src/main/res/values-fr/strings.xml -->
+    <eat-comment/>
+    <string name="validate">Résoudre</string>
+    <string name="validate_confirm">Voulez-vous résoudre le sudoku ?</string>
+    <string name="validate_title">Résoudre le sudoku</string>
+    <string name="you_won">Vous avez gagné !</string>
 </resources>
