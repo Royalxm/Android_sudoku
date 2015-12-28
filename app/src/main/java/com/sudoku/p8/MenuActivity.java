@@ -130,7 +130,10 @@ public class MenuActivity extends Activity {
     protected void onStart() {
         super.onStart();
 
-        Music.getInstance().startPlaying(this);
+        if(Music.getInstance().playe() == 0) {
+            Music.getInstance().initalizeMediaPlayer(MenuActivity.this, R.raw.one);
+            Music.getInstance().startPlaying();
+        }
 
         if(!newIntent) {
             jeuEnCours = prefs.canResume();
