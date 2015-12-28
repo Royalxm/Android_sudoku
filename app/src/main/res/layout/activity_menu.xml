@@ -5,15 +5,6 @@
     android:background="@drawable/bg">
 
 
-    <!--<TextView-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:textAppearance="?android:attr/textAppearanceLarge"-->
-        <!--android:text="SUDOKU"-->
-        <!--android:id="@+id/textView"-->
-        <!--android:layout_marginTop="50dp"-->
-        <!--android:layout_gravity="center_horizontal|top" />-->
-
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
@@ -78,7 +69,7 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Scores"
+                android:text="@string/scores"
                 android:textColor="@color/buttontextColor"
                 android:background="@drawable/button_custom"
                 android:id="@+id/buttonScore"
@@ -88,7 +79,7 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Options"
+                android:text="@string/settings"
                 android:textColor="@color/buttontextColor"
                 android:background="@drawable/button_custom"
                 android:id="@+id/buttonOptions"
@@ -98,7 +89,7 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="A propos"
+                android:text="@string/about"
                 android:textColor="@color/buttontextColor"
                 android:background="@drawable/button_custom"
                 android:id="@+id/buttonAbout"

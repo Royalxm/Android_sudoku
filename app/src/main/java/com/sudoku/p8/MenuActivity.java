@@ -3,31 +3,28 @@ package com.sudoku.p8;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.support.v7.app.AlertDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 public class MenuActivity extends Activity {
 
-    Button reprendre, easy, medium, hard, options, about;
+    Button reprendre, easy, medium, hard, options, scores, about;
     SudokuPrefs prefs;
     private int currentLevel;
     private boolean jeuEnCours;
+    private boolean newIntent = false;
     MediaPlayer sound;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        //music
-     //   sound = MediaPlayer.create(this,R.raw.one);
-      //  sound.start();
-     //   sound.setLooping(true);
-     /*   Music muc = new Music();
-         muc.start(this);*/
-        Music.getInstance().initalizeMediaPlayer(this, R.raw.one);
-        Music.getInstance().startPlaying();
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
 
@@ -36,11 +33,14 @@ public class MenuActivity extends Activity {
         medium = (Button) findViewById(R.id.buttonMedium);
         hard = (Button) findViewById(R.id.buttonHard);
         options = (Button) findViewById(R.id.buttonOptions);
+        scores = (Button) findViewById(R.id.buttonScore);
         about = (Button) findViewById(R.id.buttonAbout);
+
+        Toast.makeText(this,"oncreate", Toast.LENGTH_SHORT).show();
 
         prefs = new SudokuPrefs(this);
 
-
+        Typeface font = Typeface.createFromAsset(getAssets(), "fonts/century-gothic.ttf");
 
         //Jeu en cours
         jeuEnCours = prefs.canResume();
@@ -49,11 +49,27 @@ public class MenuActivity extends Activity {
         else reprendre.setVisibility(View.GONE);
 
 
+        reprendre.setTypeface(font, Typeface.BOLD);
+        easy.setTypeface(font, Typeface.BOLD);
+        medium.setTypeface(font, Typeface.BOLD);
+        hard.setTypeface(font, Typeface.BOLD);
+        options.setTypeface(font, Typeface.BOLD);
+        scores.setTypeface(font, Typeface.BOLD);
+        about.setTypeface(font, Typeface.BOLD);
+
         options.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MenuActivity.this, OptionActivity.class);
              //   intent.putExtra("key",sound);
+                startActivity(intent);
+            }
+        });
+
+        scores.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MenuActivity.this, ScoreActivity.class);
                 startActivity(intent);
             }
         });
@@ -114,14 +130,43 @@ public class MenuActivity extends Activity {
     protected void onStart() {
         super.onStart();
 
-         //Jeu en cours
+        Music.getInstance().startPlaying(this);
+
+        if(!newIntent) {
+            jeuEnCours = prefs.canResume();
+
+            if(jeuEnCours) reprendre.setVisibility(View.VISIBLE);
+            else reprendre.setVisibility(View.GONE);
+
+            Toast.makeText(this,"onstart", Toast.LENGTH_SHORT).show();
+        }
+
+        newIntent = false;
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        Music.getInstance().stopPlaying();
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+
+        //MainActivity.this.backToMenu();
+
         jeuEnCours = prefs.canResume();
 
         if(jeuEnCours) reprendre.setVisibility(View.VISIBLE);
         else reprendre.setVisibility(View.GONE);
+
+        newIntent = true;
+
+        Toast.makeText(this,"onnewintent", Toast.LENGTH_SHORT).show();
     }
-
-
 
     private void jeuenCoursPopup(final String difficultyButton) {
         AlertDialog.Builder alert = new AlertDialog.Builder(this);

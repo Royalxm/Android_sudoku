@@ -86,28 +86,31 @@ public class Grille {
            if(cell[1].equals("locked"))
                cellule.setLocked(true);
            cellule.setPos((int)index/9, index%9);
+
+           game.grid[(int)index/9][index%9] = cellule.getValue();
+           if(cell[1].equals("userval"))
+               game.grid[(int)index/9][index%9] = 0;
            game.tab[(int)index/9][index%9] = cellule.getValue();
-//           Log.d("SPLIT/CELLVALUE", "value " + cellule.getValue() + " locked? :" + cellule.isLocked()
-//                   + "pos x" + cellule.getPos()[0] + " posy" + cellule.getPos()[1]);
 
            index++;
        }
 
-        game.fillSudoku(game.tab, 0, 0);
+        game.fillSudoku(game.grid, 0,0);
 
-//        System.out.println("RESTOREGRILLE");
-//            for (int i2 = 0; i2 != 9; i2++) {
-//                for (int i3 = 0; i3 != 9; i3++) {
-//                    System.out.printf("%2d", game.tab[i2][i3]);
-//
-//                    if (i3 % 3 == 2)
-//                        System.out.printf("  ");
-//                }
-//                System.out.println();
-//                if (i2 % 3 == 2) System.out.println();
-//
-//            }
-//        System.out.println("FINRESTOREGRILLE");
+
+         System.out.println("FILLGRID");
+        for (int erg = 0; erg != 9; erg++) {
+            for (int esrtgh = 0; esrtgh != 9; esrtgh++) {
+                System.out.printf("%2d", game.grid[erg][esrtgh]);
+
+                if (esrtgh % 3 == 2)
+                    System.out.printf("  ");
+            }
+            System.out.println();
+            if (erg % 3 == 2) System.out.println();
+
+        }
+
 
     }
 

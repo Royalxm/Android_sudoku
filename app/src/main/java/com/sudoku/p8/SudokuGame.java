@@ -18,15 +18,16 @@ public class SudokuGame {
     static ArrayList boxes[];
     static int board[] = new int[1+(no*no)];
     public static int[][] tab = new int[9][9];
-    static int grid[][] = new int[9][9];
+    public static int grid[][] = new int[9][9];
     int gridWithZeros[][] = new int[9][9];
+    private boolean solve = false;
+
     public SudokuGame() {
 
     }
 
     public void init (Grille grille, int difficulty) {
-        int[][] tab2 = new int[9][9];
-        int[][] tab3 = new int[9][9];
+        
         int save1 = 0;
         int save2 = 0;
         int intDifficulty = 0;
@@ -82,7 +83,7 @@ public class SudokuGame {
 
                 int i = randomGenerator.nextInt(max2 - min2 + 1) + min2;
                 int j = randomGenerator.nextInt(9);
-                save1 = tab2[i][j];
+                save1 = gridWithZeros[i][j];
                 gridWithZeros[i][j] = 0;
                 i2 = randomGenerator.nextInt(max2 - min2 + 1) + min2;
                 int  j2 = randomGenerator.nextInt(9);
@@ -95,15 +96,16 @@ public class SudokuGame {
                     }
                 }
 
+
+
                 if (!fillSudoku(grid, 0, 0)) {
+
                     // (i, j) was not a good choice!
                     gridWithZeros[i][j] = save1;
                     gridWithZeros[i2][j2] = save2;
 
                 }
                 else {
-
-                    // it's still OK, let's go one step further
                     k += 1;
                 }
 
@@ -170,7 +172,6 @@ public class SudokuGame {
     }
 
 
-
     public void solveGrille(Grille grille) {
         int index = 0;
         for (int i = 0; i < 9; i++) {
@@ -181,6 +182,8 @@ public class SudokuGame {
                 cell.setPos(i,j);
             }
         }
+
+        solve = true;
     }
 
 
@@ -279,11 +282,13 @@ public class SudokuGame {
         int index=0;
         int[][] tempGrid = new int[9][9];
 
+        if(solve) return false;
+
         for (i=0;i!=9;i++) {
             for (j=0;j!=9;j++) {
                 tempGrid[i][j] = grille.getCellTab().get(index++).getValue();
 
-                if(tempGrid[i][j] == tab[i][j]) continue;
+                if(tempGrid[i][j] == grid[i][j]) continue;
                 else return false;
             }
         }

@@ -109,7 +109,7 @@ public class SudokuPrefs {
             return 3;
         }
         else if(savedDiff.equals("hard")) {
-            return 3;
+            return 5;
         }
 
         return 0;

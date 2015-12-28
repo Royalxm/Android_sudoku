@@ -18,4 +18,9 @@
     <string name="validate_confirm">Voulez-vous résoudre le sudoku ?</string>
     <string name="validate_title">Résoudre le sudoku</string>
     <string name="validate">Résoudre</string>
+    <string name="best_score">Meilleur score :</string>
+    <string name="current_score">En cours :</string>
+    <string name="about">A propos</string>
+    <string name="scores">Scores</string>
+    <string name="settings">Options</string>
 </resources>

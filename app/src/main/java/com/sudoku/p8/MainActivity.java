@@ -1,8 +1,11 @@
 package com.sudoku.p8;
 
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -11,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Chronometer;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -28,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
     public String savedGrille;
     private SudokuPrefs prefs;
     private boolean chronoStopped = false;
+    private boolean printOnce = true;
+    private MenuItem resetItem, solveItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,6 +118,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
 
+        Music.getInstance().stopPlaying();
         lastPause = SystemClock.elapsedRealtime();
         chrono.stop();
         chronoStopped = true;
@@ -122,6 +129,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
+        Music.getInstance().startPlaying();
         if(chronoStopped) {
             chrono.setBase(chrono.getBase() + SystemClock.elapsedRealtime() - lastPause);
             chrono.start();
@@ -129,35 +137,55 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void sudokuSolvedDialog() {
+        if (printOnce) {
             chrono.stop();
             gameWon = true;
 
-           // prefs.removeSudoku(difficultyS.toLowerCase());
+            runOnUiThread(new Runnable() {
+                public void run() {
+                    AlertDialog.Builder alert = new AlertDialog.Builder(MainActivity.this);
+                    alert.setTitle(R.string.you_won);
+                    alert.setMessage(getString(R.string.solved_time) + " " + chrono.getText().toString());
+                    alert.setPositiveButton("Super !", new DialogInterface.OnClickListener() {
 
-//            AlertDialog.Builder alert = new AlertDialog.Builder(this);
-//            alert.setTitle(R.string.you_won);
-//            alert.setMessage(getString(R.string.solved_time)+chrono.getText().toString());
-//            alert.setPositiveButton("Super !", new DialogInterface.OnClickListener() {
-//
-//                public void onClick(DialogInterface dialog, int id) {
-//                    dialog.dismiss();
-//                }
-//            });
-//            alert.show();
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.dismiss();
+                        }
+                    });
+                    alert.show();
+                }
+            });
+            printOnce=false;
+        }
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
 
+        resetItem = menu.findItem(R.id.reload);
+        solveItem = menu.findItem(R.id.validate_title);
 
         return super.onCreateOptionsMenu(menu);
     }
 
 
     @Override
+    public boolean onSupportNavigateUp() {
+        backToMenu();
+        Toast.makeText(this,"onnavup ", Toast.LENGTH_SHORT).show();
+        return super.onSupportNavigateUp();
+    }
+
+
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.home:
+                NavUtils.navigateUpFromSameTask(this);
+                return true;
+
             case R.id.reload:
                 AlertDialog.Builder alert = new AlertDialog.Builder(this);
                 alert.setTitle(R.string.reload_confirm_title);
@@ -187,6 +215,9 @@ public class MainActivity extends AppCompatActivity {
 
                     public void onClick(DialogInterface dialog, int id) {
                         SudokuView.solve();
+                        chrono.stop();
+                        solveItem.setEnabled(false);
+                        resetItem.setEnabled(false);
                     }
                 });
 
@@ -234,27 +265,29 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void backToMenu() {
+
+        Toast.makeText(this, "backtomenu", Toast.LENGTH_SHORT).show();
+        chrono.stop();
+
+        switch(difficulty) {
+            case 2 :  prefs.saveSudoku(SudokuView.saveGrille(chrono.getText().toString()), "easy");
+                break;
+            case 3 :
+                prefs.saveSudoku(SudokuView.saveGrille(chrono.getText().toString()), "medium");
+                break;
+            case 5 :
+                prefs.saveSudoku(SudokuView.saveGrille(chrono.getText().toString()), "hard");
+                break;
+            default : break;
+        }
+    }
+
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
 
-        chrono.stop();
-
-        //if(!gameWon) {
-            switch(difficulty) {
-                case 2 :  prefs.saveSudoku(SudokuView.saveGrille(chrono.getText().toString()), "easy");
-                    break;
-                case 3 :
-                    prefs.saveSudoku(SudokuView.saveGrille(chrono.getText().toString()), "medium");
-                    break;
-                case 5 :
-                    prefs.saveSudoku(SudokuView.saveGrille(chrono.getText().toString()), "hard");
-                    break;
-                default : break;
-            }
-       // }
-
-       // Toast.makeText(this, "Sudoku sauvegardé", Toast.LENGTH_SHORT).show();
+        backToMenu();
     }
 }
