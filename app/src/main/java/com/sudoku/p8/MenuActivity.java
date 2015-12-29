@@ -31,6 +31,28 @@ public class MenuActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
 
+        Resources res = getResources();
+
+        prefs = new SudokuPrefs(this);
+
+        if(prefs.getLocale()==null)
+            prefs.setLocale(res.getConfiguration().locale.getLanguage());
+        else {
+            Locale locale;
+            if(prefs.getLocale().equals("en")) {
+                locale = new Locale("en", "us");
+            }
+            else locale = new Locale("fr");
+
+
+            DisplayMetrics dm = res.getDisplayMetrics();
+            Configuration conf = res.getConfiguration();
+            conf.locale = locale;
+            res.updateConfiguration(conf, dm);
+        }
+
+
+
         reprendre = (Button) findViewById(R.id.buttonReprendre);
         easy = (Button) findViewById(R.id.buttonEasy);
         medium = (Button) findViewById(R.id.buttonMedium);
@@ -39,9 +61,7 @@ public class MenuActivity extends Activity {
         scores = (Button) findViewById(R.id.buttonScore);
         about = (Button) findViewById(R.id.buttonAbout);
 
-        Toast.makeText(this,"oncreate", Toast.LENGTH_SHORT).show();
 
-        prefs = new SudokuPrefs(this);
 
         Typeface font = Typeface.createFromAsset(getAssets(), "fonts/century-gothic.ttf");
 
@@ -139,30 +159,18 @@ public class MenuActivity extends Activity {
     }
 
     private void setLocale() {
-        Locale locale;
-        if(prefs.getLocale().equals("en")) {
-            locale = new Locale("en", "us");
-        }
-        else locale = new Locale("fr");
 
-        Resources res = getResources();
-        DisplayMetrics dm = res.getDisplayMetrics();
-        Configuration conf = res.getConfiguration();
-        conf.locale = locale;
-        res.updateConfiguration(conf, dm);
-        prefs.setLocale("fr");
     }
 
     @Override
     protected void onStart() {
         super.onStart();
 
-        Locale locale = new Locale(prefs.getLocale());
-        Resources res = getResources();
-        DisplayMetrics dm = res.getDisplayMetrics();
-        Configuration conf = res.getConfiguration();
-        conf.locale = locale;
-        res.updateConfiguration(conf, dm);
+        Toast.makeText(this,"locale : "+getResources().getConfiguration().locale.getLanguage(), Toast.LENGTH_SHORT).show();
+
+
+        Toast.makeText(this,getString(R.string.resume_game), Toast.LENGTH_SHORT).show();
+
 
 
         if(!newIntent) {
