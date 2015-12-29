@@ -29,29 +29,10 @@ public class MenuActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+
+        setLocale();
+
         setContentView(R.layout.activity_menu);
-
-        Resources res = getResources();
-
-        prefs = new SudokuPrefs(this);
-
-        if(prefs.getLocale()==null)
-            prefs.setLocale(res.getConfiguration().locale.getLanguage());
-        else {
-            Locale locale;
-            if(prefs.getLocale().equals("en")) {
-                locale = new Locale("en", "us");
-            }
-            else locale = new Locale("fr");
-
-
-            DisplayMetrics dm = res.getDisplayMetrics();
-            Configuration conf = res.getConfiguration();
-            conf.locale = locale;
-            res.updateConfiguration(conf, dm);
-        }
-
-
 
         reprendre = (Button) findViewById(R.id.buttonReprendre);
         easy = (Button) findViewById(R.id.buttonEasy);
@@ -159,12 +140,33 @@ public class MenuActivity extends Activity {
     }
 
     private void setLocale() {
+        Resources res = getBaseContext().getResources();
 
+        prefs = new SudokuPrefs(this);
+
+        if(prefs.getLocale()==null)
+            prefs.setLocale(res.getConfiguration().locale.getLanguage());
+        else {
+            Locale locale;
+            if(prefs.getLocale().equals("en")) {
+                locale = new Locale("en", "us");
+            }
+            else locale = new Locale("fr");
+
+            Locale.setDefault(locale);
+            DisplayMetrics dm = res.getDisplayMetrics();
+            Configuration conf = res.getConfiguration();
+            conf.locale = locale;
+            res.updateConfiguration(conf, dm);
+        }
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+
+
+        setLocale();
 
         Toast.makeText(this,"locale : "+getResources().getConfiguration().locale.getLanguage(), Toast.LENGTH_SHORT).show();
 
