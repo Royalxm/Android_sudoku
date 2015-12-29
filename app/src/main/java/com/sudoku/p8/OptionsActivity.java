@@ -19,8 +19,8 @@ public class OptionsActivity extends Activity {
 
         offmusic = (Button)findViewById(R.id.offmusic);
         onmusic = (Button)findViewById(R.id.onmusic);
-        langfr = (Button)findViewById(R.id.offmusic);
-        langen = (Button)findViewById(R.id.onmusic);
+        langfr = (Button)findViewById(R.id.button12);
+        langen = (Button)findViewById(R.id.button11);
 
         offmusic.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -37,6 +37,9 @@ public class OptionsActivity extends Activity {
                 }
             }
         });
+
+
+
     }
 
 
