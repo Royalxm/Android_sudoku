@@ -29,6 +29,8 @@ public class SudokuPrefs {
     public static final String IS_HARD = "existgrilleHard";
     public static final String RESUME_DIFF = "resumeDifficulty";
     public static final String LANG = "sudokuLocale";
+
+    public static final String SOUND = "sudokuSon";
     private Context context;
 
     public SudokuPrefs(Context context) {
@@ -70,6 +72,17 @@ public class SudokuPrefs {
     public void saveStringPreference(String key, String value) {
         prefsEditor.putString(key, value);
         prefsEditor.commit();
+    }
+
+    public void saveSoundPreference(Boolean value)
+    {
+        saveBooleanPreference(SOUND,value);
+    }
+
+    public Boolean getSoundPreference()
+    {
+
+        return getBooleanPreference(SOUND);
     }
 
     public void saveStringArrayPreference(String key, Set<String> values) {

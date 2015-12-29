@@ -226,9 +226,9 @@ public class SudokuGame {
 //        a = 1;
 //        }
         tempGrid[cellpos[0]][cellpos[1]] = cellvalue;
-        int[] row = new int[9];
-        int[] column = new int[9];
-        int[] square = new int[9];
+            int[] row = new int[9];
+            int[] column = new int[9];
+            int[] square = new int[9];
 
         for (int i = 0; i < 9; i++) {
             if(i != cellpos[0])

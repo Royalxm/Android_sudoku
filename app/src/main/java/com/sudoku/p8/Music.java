@@ -8,7 +8,7 @@ import android.media.MediaPlayer;
  */
 public class Music {
 
-    MediaPlayer sound;
+    MediaPlayer sound = null;
 
     private static Music refrence = null;
 

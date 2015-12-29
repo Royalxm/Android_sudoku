@@ -15,6 +15,7 @@ import java.util.Locale;
 
 public class OptionsActivity extends Activity {
 
+    SudokuPrefs pref;
     Button onmusic, offmusic, langfr, langen;
     private SudokuPrefs prefs;
     private Locale myLocale;
@@ -36,6 +37,7 @@ public class OptionsActivity extends Activity {
         offmusic.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Music.getInstance().stopPlaying();
+                prefs.saveSoundPreference(true);
             }
         });
 
@@ -45,6 +47,7 @@ public class OptionsActivity extends Activity {
                 if (Music.getInstance().playe() == 0) {
                     Music.getInstance().initalizeMediaPlayer(OptionsActivity.this, R.raw.one);
                     Music.getInstance().startPlaying();
+                    prefs.saveSoundPreference(false);
                 }
             }
         });
@@ -78,6 +81,22 @@ public class OptionsActivity extends Activity {
                 recreate();
             }
         });
+
+    }
+    protected void onStart() {
+        super.onStart();
+        if (!(prefs.getSoundPreference())) {
+            Music.getInstance().initalizeMediaPlayer(OptionsActivity.this, R.raw.one);
+            Music.getInstance().startPlaying();
+
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        Music.getInstance().stopPlaying();
 
     }
 

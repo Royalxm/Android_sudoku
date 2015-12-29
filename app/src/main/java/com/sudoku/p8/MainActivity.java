@@ -120,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
 
-       //Music.getInstance().stopPlaying();
+        Music.getInstance().stopPlaying();
         lastPause = SystemClock.elapsedRealtime();
         chrono.stop();
         chronoStopped = true;
@@ -250,7 +250,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void updateTitle(String text) {
-        setTitle(difficultyS+" - "+text);
+        setTitle(difficultyS + " - " + text);
     }
 
     public int getDifficulty() {
@@ -299,4 +299,15 @@ public class MainActivity extends AppCompatActivity {
         if(!solved && !gameWon)
             backToMenu();
     }
+
+    protected void onStart() {
+        super.onStart();
+        if (!(prefs.getSoundPreference())) {
+            Music.getInstance().initalizeMediaPlayer(MainActivity.this, R.raw.one);
+            Music.getInstance().startPlaying();
+
+        }
+    }
+
+
 }

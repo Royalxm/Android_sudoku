@@ -164,7 +164,10 @@ public class MenuActivity extends Activity {
     @Override
     protected void onStart() {
         super.onStart();
-
+        if(!(prefs.getSoundPreference())) {
+            Music.getInstance().initalizeMediaPlayer(MenuActivity.this, R.raw.one);
+            Music.getInstance().startPlaying();
+        }
 
         setLocale();
 
@@ -192,7 +195,7 @@ public class MenuActivity extends Activity {
     protected void onPause() {
         super.onPause();
 
-//        Music.getInstance().stopPlaying();
+       Music.getInstance().stopPlaying();
     }
 
     @Override

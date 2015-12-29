@@ -19,7 +19,7 @@ import android.widget.Toast;
  */
 public class SudokuView extends SurfaceView  implements SurfaceHolder.Callback, Runnable {
 
-    private Paint linePaint, cellBorderPaint;
+    private Paint linePaint, cellBorderPaint,cellBorderPaint1;
     private boolean in = true;
     private int width, height, cellWidth, cellHeight;
     SurfaceHolder holder;
@@ -85,6 +85,11 @@ public class SudokuView extends SurfaceView  implements SurfaceHolder.Callback, 
         cellBorderPaint.setColor(Color.RED);
         cellBorderPaint.setStyle(Paint.Style.STROKE);
         cellBorderPaint.setStrokeWidth(7);
+
+        cellBorderPaint1 = new Paint();
+        cellBorderPaint1.setColor(Color.BLUE);
+        cellBorderPaint1.setStyle(Paint.Style.STROKE);
+        cellBorderPaint1.setStrokeWidth(5);
 
         if ((cv_thread!=null) && (!cv_thread.isAlive())) {
             cv_thread.start();
@@ -157,6 +162,9 @@ public class SudokuView extends SurfaceView  implements SurfaceHolder.Callback, 
     private void paintCell(Canvas canvas) {
         if(paintCell) {
             canvas.drawRect(paintedCell.getRect(), cellBorderPaint);
+
+
+            Log.i("rer",""+grille.getCell(paintedCell.getPos()[0],paintedCell.getPos()[1]).getPos());
         }
     }
 

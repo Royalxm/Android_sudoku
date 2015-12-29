@@ -59,4 +59,21 @@ public class ScoresActivity extends Activity {
         if(s==null) return "";
         return s;
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        if(!(prefs.getSoundPreference())) {
+            Music.getInstance().initalizeMediaPlayer(ScoresActivity.this, R.raw.one);
+            Music.getInstance().startPlaying();
+        }
+    }
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        Music.getInstance().initalizeMediaPlayer(ScoresActivity.this, R.raw.one);
+        Music.getInstance().startPlaying();
+    }
 }

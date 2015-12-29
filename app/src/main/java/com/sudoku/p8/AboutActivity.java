@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.widget.TextView;
 
 public class AboutActivity extends Activity {
-
+    private SudokuPrefs prefs;
     TextView aboutTextView1,aboutTextView2,aboutTextView3,aboutTextView4;
 
     @Override
@@ -27,6 +27,22 @@ public class AboutActivity extends Activity {
         aboutTextView2.setTypeface(font, Typeface.BOLD);
         aboutTextView3.setTypeface(font, Typeface.BOLD);
         aboutTextView4.setTypeface(font, Typeface.BOLD);
+
+    }
+    protected void onStart() {
+        super.onStart();
+        if (!(prefs.getSoundPreference())) {
+            Music.getInstance().initalizeMediaPlayer(AboutActivity.this, R.raw.one);
+            Music.getInstance().startPlaying();
+
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        Music.getInstance().stopPlaying();
 
     }
 }
