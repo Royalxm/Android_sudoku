@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     private SudokuPrefs prefs;
     private boolean chronoStopped = false;
     private boolean printOnce = true;
+    private boolean solved = false;
     private MenuItem resetItem, solveItem;
 
     @Override
@@ -70,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
         actionBar.setDisplayShowCustomEnabled(true);
 
        if(!resumeGame) chrono.setBase(SystemClock.elapsedRealtime());
+        else restoreTimer();
 
         chrono.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
             @Override
@@ -118,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
 
-        Music.getInstance().stopPlaying();
+       //Music.getInstance().stopPlaying();
         lastPause = SystemClock.elapsedRealtime();
         chrono.stop();
         chronoStopped = true;
@@ -129,8 +131,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        Music.getInstance().startPlaying();
-        if(chronoStopped) {
+       // Music.getInstance().startPlaying();
+        if(chronoStopped && !gameWon) {
             chrono.setBase(chrono.getBase() + SystemClock.elapsedRealtime() - lastPause);
             chrono.start();
         }
@@ -141,12 +143,21 @@ public class MainActivity extends AppCompatActivity {
             chrono.stop();
             gameWon = true;
 
+            Log.d("gamewon", "gamewon");
+
+            //
+
+
+
             runOnUiThread(new Runnable() {
                 public void run() {
+                    prefs.saveScore(chrono.getText().toString(), gameWon, difficulty);
+                    prefs.deletelvl(difficulty);
+
                     AlertDialog.Builder alert = new AlertDialog.Builder(MainActivity.this);
                     alert.setTitle(R.string.you_won);
                     alert.setMessage(getString(R.string.solved_time) + " " + chrono.getText().toString());
-                    alert.setPositiveButton("Super !", new DialogInterface.OnClickListener() {
+                    alert.setPositiveButton(getString(R.string.victory_great), new DialogInterface.OnClickListener() {
 
                         public void onClick(DialogInterface dialog, int id) {
                             dialog.dismiss();
@@ -218,6 +229,8 @@ public class MainActivity extends AppCompatActivity {
                         chrono.stop();
                         solveItem.setEnabled(false);
                         resetItem.setEnabled(false);
+                        prefs.deletelvl(difficulty);
+                        solved = true;
                     }
                 });
 
@@ -246,38 +259,33 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void restoreTimer() {
-        Log.d("restored time", "on restored time");
-        String[] cells = savedGrille.split(";");
-        for(String cellData : cells) {
-            String[] cell = cellData.split("=");
-
-            if(cell[1].equals("time")) {
-                String[] time = cell[0].split(":");
-                int min = Integer.parseInt(time[0]);
-                int sec = Integer.parseInt(time[1]);
-                chrono.setBase(SystemClock.elapsedRealtime() - (min * 60000 + sec * 1000));
-                chrono.setText(cell[0]);
-                Log.d("restored time", "restored time : " +cell[0]+" ("+(SystemClock.elapsedRealtime() - (min * 60000 + sec * 1000))+")");
-                savedGrille = savedGrille.substring(0, savedGrille.length()-cellData.length()-1);
-                //return;
-            }
-        }
-
+        String score = prefs.getScore(difficulty);
+        String[] time = score.split(":");
+        int min = Integer.parseInt(time[0]);
+        int sec = Integer.parseInt(time[1]);
+        chrono.setBase(SystemClock.elapsedRealtime() - (min * 60000 + sec * 1000));
+        chrono.setText(score);
     }
 
     public void backToMenu() {
 
-        Toast.makeText(this, "backtomenu", Toast.LENGTH_SHORT).show();
         chrono.stop();
 
         switch(difficulty) {
-            case 2 :  prefs.saveSudoku(SudokuView.saveGrille(chrono.getText().toString()), "easy");
+            case 2 :
+                prefs.saveSudoku(SudokuView.saveGrille(), "easy");
+                if(!gameWon)
+                    prefs.saveScore(chrono.getText().toString(), false, difficulty);
                 break;
             case 3 :
-                prefs.saveSudoku(SudokuView.saveGrille(chrono.getText().toString()), "medium");
+                prefs.saveSudoku(SudokuView.saveGrille(), "medium");
+                if(!gameWon)
+                    prefs.saveScore(chrono.getText().toString(), false, difficulty);
                 break;
             case 5 :
-                prefs.saveSudoku(SudokuView.saveGrille(chrono.getText().toString()), "hard");
+                prefs.saveSudoku(SudokuView.saveGrille(), "hard");
+                if(!gameWon)
+                    prefs.saveScore(chrono.getText().toString(), false, difficulty);
                 break;
             default : break;
         }
@@ -288,6 +296,7 @@ public class MainActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
 
-        backToMenu();
+        if(!solved && !gameWon)
+            backToMenu();
     }
 }

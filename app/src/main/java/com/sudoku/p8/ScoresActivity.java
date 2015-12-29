@@ -6,10 +6,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
 
-public class ScoreActivity extends Activity {
+public class ScoresActivity extends Activity {
 
     private TextView textViewEasy, textViewEasyBestscore, textViewEasyScore, textViewMedium,
             textViewMediumBestscore, textViewMediumScore, textViewHard, textViewHardBestscore,textViewHardScore;
+
+    private SudokuPrefs prefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,5 +43,20 @@ public class ScoreActivity extends Activity {
         textViewEasyScore.setTypeface(font, Typeface.BOLD);
         textViewMediumScore.setTypeface(font, Typeface.BOLD);
         textViewHardScore.setTypeface(font, Typeface.BOLD);
+
+        prefs = new SudokuPrefs(this);
+
+        textViewEasyBestscore.append(" "+formatString(prefs.getStringPreference(SudokuPrefs.BESTSCORE_EASY)));
+        textViewMediumBestscore.append(" "+formatString(prefs.getStringPreference(SudokuPrefs.BESTSCORE_MED)));
+        textViewHardBestscore.append(" "+formatString(prefs.getStringPreference(SudokuPrefs.BESTSCORE_HARD)));
+
+        textViewEasyScore.append(" "+formatString(prefs.getStringPreference(SudokuPrefs.CURRSCORE_EASY)));
+        textViewMediumScore.append(" "+formatString(prefs.getStringPreference(SudokuPrefs.CURRSCORE_MED)));
+        textViewHardScore.append(" "+formatString(prefs.getStringPreference(SudokuPrefs.CURRSCORE_HARD)));
+    }
+
+    private String formatString(String s) {
+        if(s==null) return "";
+        return s;
     }
 }

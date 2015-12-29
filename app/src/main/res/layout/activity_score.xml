@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.sudoku.p8.ScoreActivity" android:background="@drawable/scores">
+    tools:context=".ScoresActivity" android:background="@drawable/scores">
 
 
     <LinearLayout

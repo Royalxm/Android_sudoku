@@ -23,4 +23,9 @@
     <string name="about">A propos</string>
     <string name="scores">Scores</string>
     <string name="settings">Options</string>
+    <string name="victory_great">Super !</string>
+    <string name="designby">Design par :</string>
+    <string name="options_music">Musique</string>
+    <string name="developedby">Developpé par :</string>
+    <string name="options_langue">Langue</string>
 </resources>

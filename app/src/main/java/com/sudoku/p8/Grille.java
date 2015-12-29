@@ -97,24 +97,9 @@ public class Grille {
 
         game.fillSudoku(game.grid, 0,0);
 
-
-         System.out.println("FILLGRID");
-        for (int erg = 0; erg != 9; erg++) {
-            for (int esrtgh = 0; esrtgh != 9; esrtgh++) {
-                System.out.printf("%2d", game.grid[erg][esrtgh]);
-
-                if (esrtgh % 3 == 2)
-                    System.out.printf("  ");
-            }
-            System.out.println();
-            if (erg % 3 == 2) System.out.println();
-
-        }
-
-
     }
 
-    public String toString(String time) {
+    public String toString() {
         StringBuilder sb = new StringBuilder();
         for(Cellule cell : celltab) {
             if(cell.isLocked()) {
@@ -123,7 +108,6 @@ public class Grille {
             if(cell.getValue()==0) sb.append(cell.getValue()).append("=vide;");
             if(!cell.isLocked() && cell.getValue()!=0) sb.append(cell.getValue()).append("=userval;");
         }
-        sb.append(time).append("=time;");
         return sb.toString();
     }
 }

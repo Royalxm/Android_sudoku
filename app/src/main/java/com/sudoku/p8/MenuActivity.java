@@ -7,8 +7,6 @@ import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.support.v7.app.AlertDialog;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -60,16 +58,25 @@ public class MenuActivity extends Activity {
         options.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MenuActivity.this, OptionActivity.class);
-             //   intent.putExtra("key",sound);
+                Intent intent = new Intent(MenuActivity.this, OptionsActivity.class);
+                //   intent.putExtra("key",sound);
                 startActivity(intent);
             }
         });
 
+        about.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MenuActivity.this, AboutActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
         scores.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MenuActivity.this, ScoreActivity.class);
+                Intent intent = new Intent(MenuActivity.this, ScoresActivity.class);
                 startActivity(intent);
             }
         });
@@ -86,7 +93,7 @@ public class MenuActivity extends Activity {
         easy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(jeuEnCours) {
+                if(prefs.existsE()) {
                     jeuenCoursPopup(getString(R.string.easy_mode));
                 }
                 else {
@@ -100,7 +107,7 @@ public class MenuActivity extends Activity {
         medium.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(jeuEnCours) {
+                if(prefs.existsM()) {
                     jeuenCoursPopup(getString(R.string.medium_mode));
                 }
                 else {
@@ -114,7 +121,7 @@ public class MenuActivity extends Activity {
         hard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(jeuEnCours) {
+                if(prefs.existsH()) {
                     jeuenCoursPopup(getString(R.string.hard_mode));
                 }
                 else {
@@ -130,10 +137,10 @@ public class MenuActivity extends Activity {
     protected void onStart() {
         super.onStart();
 
-        if(Music.getInstance().playe() == 0) {
-            Music.getInstance().initalizeMediaPlayer(MenuActivity.this, R.raw.one);
-            Music.getInstance().startPlaying();
-        }
+//        if(Music.getInstance().playe() == 0) {
+//            Music.getInstance().initalizeMediaPlayer(MenuActivity.this, R.raw.one);
+//            Music.getInstance().startPlaying();
+//        }
 
         if(!newIntent) {
             jeuEnCours = prefs.canResume();
@@ -152,7 +159,7 @@ public class MenuActivity extends Activity {
     protected void onPause() {
         super.onPause();
 
-        Music.getInstance().stopPlaying();
+//        Music.getInstance().stopPlaying();
     }
 
     @Override

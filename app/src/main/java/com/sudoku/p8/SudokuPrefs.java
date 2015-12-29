@@ -1,8 +1,9 @@
 package com.sudoku.p8;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.SystemClock;
+import android.util.Log;
 
 import java.util.Set;
 
@@ -17,6 +18,12 @@ public class SudokuPrefs {
     public static final String GRILLE_EASY = "sudokuEasyGrille";
     public static final String GRILLE_MED = "sudokuMedGrille";
     public static final String GRILLE_HARD = "sudokuHardGrille";
+    public static final String CURRSCORE_EASY = "sudokuCurrscoreEasy";
+    public static final String CURRSCORE_MED = "sudokuCurrscoreMed";
+    public static final String CURRSCORE_HARD = "sudokuCurrscoreHard";
+    public static final String BESTSCORE_EASY = "sudokuBestscoreEasy";
+    public static final String BESTSCORE_MED = "sudokuBestscoreMed";
+    public static final String BESTSCORE_HARD = "sudokuBestscoreHard";
     public static final String IS_EASY = "existgrilleEasy";
     public static final String IS_MEDIUM = "existgrilleMedium";
     public static final String IS_HARD = "existgrilleHard";
@@ -31,6 +38,15 @@ public class SudokuPrefs {
 
     public int getIntPreference(String key) {
         return prefs.getInt(key, 0);
+    }
+
+    public long getLongPreference(String key) {
+        return prefs.getLong(key, 0);
+    }
+
+    public void saveLongPreference(String key, long value) {
+        prefsEditor.putLong(key, value);
+        prefsEditor.commit();
     }
 
     public String getStringPreference(String key) {
@@ -65,19 +81,6 @@ public class SudokuPrefs {
         prefsEditor.commit();
     }
 
-    public void removeSudoku(String difficulty) {
-        if (difficulty.equals("easy")) {
-            saveStringPreference(GRILLE_EASY, null);
-        } else if (difficulty.equals("medium")) {
-            saveStringPreference(GRILLE_MED, null);
-            saveStringPreference(RESUME_DIFF, null);
-            saveBooleanPreference(IS_MEDIUM, false);
-        } else if (difficulty.equals("hard")) {
-            saveStringPreference(GRILLE_HARD, null);
-            saveStringPreference(RESUME_DIFF, null);
-            saveBooleanPreference(IS_HARD, false);
-        }
-    }
 
 
     public void saveSudoku(String grille, String difficulty) {
@@ -100,6 +103,25 @@ public class SudokuPrefs {
         return getBooleanPreference(IS_EASY) || getBooleanPreference(IS_MEDIUM) || getBooleanPreference(IS_HARD);
     }
 
+    public void deletelvl(int diff) {
+        switch(diff) {
+            case 2: saveBooleanPreference(IS_EASY, false); break;
+            case 3: saveBooleanPreference(IS_MEDIUM, false); break;
+            case 5: saveBooleanPreference(IS_HARD, false); break;
+            default: break;
+        }
+    }
+
+    public boolean existsE() {
+        return getBooleanPreference(IS_EASY);
+    }
+    public boolean existsM() {
+        return getBooleanPreference(IS_MEDIUM);
+    }
+    public boolean existsH() {
+        return getBooleanPreference(IS_HARD);
+    }
+
     public int getSavedDiff() {
         String savedDiff = getStringPreference(RESUME_DIFF);
         if(savedDiff.equals("easy")) {
@@ -119,22 +141,81 @@ public class SudokuPrefs {
     public String resumeSudoku() {
         String savedDiff = getStringPreference(RESUME_DIFF);
         if(savedDiff.equals("easy")) {
-            saveBooleanPreference(IS_MEDIUM, false);
-            saveBooleanPreference(IS_HARD, false);
+//            saveBooleanPreference(IS_MEDIUM, false);
+//            saveBooleanPreference(IS_HARD, false);
             return getStringPreference(GRILLE_EASY);
         }
         else if(savedDiff.equals("medium")) {
-            saveBooleanPreference(IS_EASY, false);
-            saveBooleanPreference(IS_HARD, false);
+//            saveBooleanPreference(IS_EASY, false);
+//            saveBooleanPreference(IS_HARD, false);
             return getStringPreference(GRILLE_MED);
         }
         else if(savedDiff.equals("hard")) {
-            saveBooleanPreference(IS_EASY, false);
-            saveBooleanPreference(IS_MEDIUM, false);
+//            saveBooleanPreference(IS_EASY, false);
+//            saveBooleanPreference(IS_MEDIUM, false);
             return getStringPreference(GRILLE_HARD);
         }
 
         return null;
     }
 
+    public String getScore(int diff) {
+        switch(diff) {
+            case 2: return getStringPreference(CURRSCORE_EASY);
+            case 3: return getStringPreference(CURRSCORE_MED);
+            case 5: return getStringPreference(CURRSCORE_HARD);
+            default: break;
+        }
+
+        return "";
+    }
+
+    public int minToSecs(String s) {
+        String[] time = s.split(":");
+        int min = Integer.parseInt(time[0]);
+        int sec = Integer.parseInt(time[1]);
+        return (60*min)+sec;
+    }
+
+    public void saveScore(String s, boolean gamewon, int difficulty) {
+
+        Log.d("score time", "time: " + s);
+
+        int timeL = minToSecs(s);
+
+        switch (difficulty) {
+            case 2:
+                if(!gamewon) saveStringPreference(CURRSCORE_EASY, s);
+                else {
+                    if(getStringPreference(BESTSCORE_EASY) != null) {
+                        if(timeL< minToSecs(getStringPreference(BESTSCORE_EASY)))
+                            saveStringPreference(BESTSCORE_EASY, s);
+                    }
+                    else saveStringPreference(BESTSCORE_EASY, s);
+                }
+                break;
+            case 3:
+                if(!gamewon) saveStringPreference(CURRSCORE_MED, s);
+                else {
+                    if(getStringPreference(BESTSCORE_MED) != null) {
+                        if(timeL< minToSecs(getStringPreference(BESTSCORE_MED)))
+                            saveStringPreference(BESTSCORE_MED, s);
+                    }
+                    else saveStringPreference(BESTSCORE_MED, s);
+                }
+                break;
+            case 5:
+                if(!gamewon) saveStringPreference(CURRSCORE_HARD, s);
+                else {
+                    if(getStringPreference(BESTSCORE_HARD) != null) {
+                        if(timeL< minToSecs(getStringPreference(BESTSCORE_HARD)))
+                            saveStringPreference(BESTSCORE_HARD, s);
+                    }
+                    else saveStringPreference(BESTSCORE_HARD, s);
+                }
+                break;
+            default: break;
+        }
+
+    }
 }
