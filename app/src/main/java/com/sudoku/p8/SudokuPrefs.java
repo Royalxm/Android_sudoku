@@ -180,7 +180,7 @@ public class SudokuPrefs {
 
     public void saveScore(String s, boolean gamewon, int difficulty) {
 
-        Log.d("score time", "tiime: " + s);
+        Log.d("score time", "tiirme: " + s);
 
         int timeL = minToSecs(s);
 
