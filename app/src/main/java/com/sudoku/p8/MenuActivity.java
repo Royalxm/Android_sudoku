@@ -194,8 +194,11 @@ public class MenuActivity extends Activity {
     @Override
     protected void onPause() {
         super.onPause();
+    if(!(prefs.getSoundPreference()))
+        {
+            Music.getInstance().stopPlaying();
+        }
 
-       Music.getInstance().stopPlaying();
     }
 
     @Override

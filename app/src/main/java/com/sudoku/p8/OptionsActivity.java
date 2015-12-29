@@ -44,7 +44,7 @@ public class OptionsActivity extends Activity {
         onmusic.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {
-                if (Music.getInstance().playe() == 0) {
+                if (prefs.getSoundPreference()) {
                     Music.getInstance().initalizeMediaPlayer(OptionsActivity.this, R.raw.one);
                     Music.getInstance().startPlaying();
                     prefs.saveSoundPreference(false);
@@ -96,7 +96,10 @@ public class OptionsActivity extends Activity {
     protected void onPause() {
         super.onPause();
 
-        Music.getInstance().stopPlaying();
+        if(!(prefs.getSoundPreference()))
+        {
+            Music.getInstance().stopPlaying();
+        }
 
     }
 

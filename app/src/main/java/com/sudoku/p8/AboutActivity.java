@@ -7,14 +7,15 @@ import android.os.Bundle;
 import android.widget.TextView;
 
 public class AboutActivity extends Activity {
-    private SudokuPrefs prefs;
+     SudokuPrefs prefs;
+
     TextView aboutTextView1,aboutTextView2,aboutTextView3,aboutTextView4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
-
+        prefs = new SudokuPrefs(this);
         Typeface font = Typeface.createFromAsset(getAssets(), "fonts/century-gothic.ttf");
 
         aboutTextView1 = (TextView) findViewById(R.id.aboutTextView1);
@@ -29,7 +30,11 @@ public class AboutActivity extends Activity {
         aboutTextView4.setTypeface(font, Typeface.BOLD);
 
     }
+
+
+    @Override
     protected void onStart() {
+
         super.onStart();
         if (!(prefs.getSoundPreference())) {
             Music.getInstance().initalizeMediaPlayer(AboutActivity.this, R.raw.one);
@@ -42,7 +47,10 @@ public class AboutActivity extends Activity {
     protected void onPause() {
         super.onPause();
 
-        Music.getInstance().stopPlaying();
+        if(!(prefs.getSoundPreference()))
+        {
+            Music.getInstance().stopPlaying();
+        }
 
     }
 }

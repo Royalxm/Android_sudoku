@@ -64,16 +64,19 @@ public class ScoresActivity extends Activity {
     protected void onPause() {
         super.onPause();
 
-        if(!(prefs.getSoundPreference())) {
-            Music.getInstance().initalizeMediaPlayer(ScoresActivity.this, R.raw.one);
-            Music.getInstance().startPlaying();
+        if(!(prefs.getSoundPreference()))
+        {
+            Music.getInstance().stopPlaying();
         }
     }
     @Override
     protected void onStart() {
         super.onStart();
 
-        Music.getInstance().initalizeMediaPlayer(ScoresActivity.this, R.raw.one);
-        Music.getInstance().startPlaying();
+        if (!(prefs.getSoundPreference())) {
+            Music.getInstance().initalizeMediaPlayer(ScoresActivity.this, R.raw.one);
+            Music.getInstance().startPlaying();
+
+        }
     }
 }

@@ -120,7 +120,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
 
-        Music.getInstance().stopPlaying();
+        if(!(prefs.getSoundPreference()))
+        {
+            Music.getInstance().stopPlaying();
+        }
         lastPause = SystemClock.elapsedRealtime();
         chrono.stop();
         chronoStopped = true;
