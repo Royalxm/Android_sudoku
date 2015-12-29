@@ -28,6 +28,7 @@ public class SudokuPrefs {
     public static final String IS_MEDIUM = "existgrilleMedium";
     public static final String IS_HARD = "existgrilleHard";
     public static final String RESUME_DIFF = "resumeDifficulty";
+    public static final String LANG = "sudokuLocale";
     private Context context;
 
     public SudokuPrefs(Context context) {
@@ -217,5 +218,14 @@ public class SudokuPrefs {
             default: break;
         }
 
+    }
+
+
+    public void setLocale(String lang) {
+        saveStringPreference(LANG, lang);
+    }
+
+    public String getLocale() {
+        return getStringPreference(LANG);
     }
 }

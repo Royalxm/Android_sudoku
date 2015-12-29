@@ -3,13 +3,18 @@ package com.sudoku.p8;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.support.v7.app.AlertDialog;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+
+import java.util.Locale;
 
 public class MenuActivity extends Activity {
 
@@ -133,14 +138,32 @@ public class MenuActivity extends Activity {
         });
     }
 
+    private void setLocale() {
+        Locale locale;
+        if(prefs.getLocale().equals("en")) {
+            locale = new Locale("en", "us");
+        }
+        else locale = new Locale("fr");
+
+        Resources res = getResources();
+        DisplayMetrics dm = res.getDisplayMetrics();
+        Configuration conf = res.getConfiguration();
+        conf.locale = locale;
+        res.updateConfiguration(conf, dm);
+        prefs.setLocale("fr");
+    }
+
     @Override
     protected void onStart() {
         super.onStart();
 
-//        if(Music.getInstance().playe() == 0) {
-//            Music.getInstance().initalizeMediaPlayer(MenuActivity.this, R.raw.one);
-//            Music.getInstance().startPlaying();
-//        }
+        Locale locale = new Locale(prefs.getLocale());
+        Resources res = getResources();
+        DisplayMetrics dm = res.getDisplayMetrics();
+        Configuration conf = res.getConfiguration();
+        conf.locale = locale;
+        res.updateConfiguration(conf, dm);
+
 
         if(!newIntent) {
             jeuEnCours = prefs.canResume();
