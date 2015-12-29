@@ -52,7 +52,7 @@ public class OptionsActivity extends Activity {
 
         langfr.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Toast.makeText(OptionsActivity.this, "fr", Toast.LENGTH_SHORT).show();
+                Toast.makeText(OptionsActivity.this, "ffr", Toast.LENGTH_SHORT).show();
                 Locale locale = new Locale("fr");
                 Resources res = getResources();
                 DisplayMetrics dm = res.getDisplayMetrics();
@@ -67,7 +67,7 @@ public class OptionsActivity extends Activity {
 
         langen.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Toast.makeText(OptionsActivity.this, "en", Toast.LENGTH_SHORT).show();
+                Toast.makeText(OptionsActivity.this, "efn", Toast.LENGTH_SHORT).show();
                 Locale locale = new Locale("en", "us");
                 Resources res = getResources();
                 DisplayMetrics dm = res.getDisplayMetrics();
