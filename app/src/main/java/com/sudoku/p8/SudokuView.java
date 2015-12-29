@@ -25,12 +25,14 @@ public class SudokuView extends SurfaceView  implements SurfaceHolder.Callback, 
     SurfaceHolder holder;
     private  Thread  cv_thread;
     private Grille grille;
-    private Cellule paintedCell;
+    private Cellule paintedCell,drawss,drawsz;
     private SudokuGame game;
     private boolean  fp = false;
     private int difficulty;
     private MainActivity activity;
     private boolean paintCell = false;
+
+    private float xcell,ycell;
 
     public SudokuView(Context context, AttributeSet attrs) {
 
@@ -161,11 +163,24 @@ public class SudokuView extends SurfaceView  implements SurfaceHolder.Callback, 
 
     private void paintCell(Canvas canvas) {
         if(paintCell) {
-            canvas.drawRect(paintedCell.getRect(), cellBorderPaint);
 
 
-            Log.i("rer",""+grille.getCell(paintedCell.getPos()[0],paintedCell.getPos()[1]).getPos());
+
+            Log.i("rer", " zezeze  " + width + "  " + height);
+
+            for(int i= 0;i != width;i++)
+            {
+                drawsz = grille.getCell(i, (int)ycell);
+                canvas.drawRect(drawsz.getRect(), cellBorderPaint1);
+                drawss = grille.getCell((int)xcell, i);
+                canvas.drawRect(drawss.getRect(), cellBorderPaint1);
+                canvas.drawRect(paintedCell.getRect(), cellBorderPaint);
+            }
+
+
         }
+
+
     }
 
 
@@ -268,6 +283,9 @@ public class SudokuView extends SurfaceView  implements SurfaceHolder.Callback, 
         Log.i("-> FCT <-", "onTouchEvent X: "+ event.getX()+" Y: "+ event.getY());
 
        paintedCell = grille.getCell((int)event.getX(), (int)event.getY());
+
+        xcell =event.getX();
+        ycell = event.getY();
 
         if(paintedCell != null) {
             paintCell = true;
