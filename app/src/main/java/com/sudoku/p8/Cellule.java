@@ -13,12 +13,12 @@ public class Cellule {
     private boolean selected = false;
     private boolean isLocked = false;
 
-        public Cellule(Rect rect)
-        {
-            this.rect = rect;
-            this.value = 0;
-            this.pos = new int[2];
-        }
+    public Cellule(Rect rect)
+    {
+        this.rect = rect;
+        this.value = 0;
+        this.pos = new int[2];
+    }
 
     public void setValue(int val) {
         this.value = val;

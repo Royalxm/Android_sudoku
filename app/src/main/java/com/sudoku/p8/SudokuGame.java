@@ -1,10 +1,6 @@
 package com.sudoku.p8;
 
-import android.util.Log;
-
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Random;
 
 /**
@@ -27,7 +23,7 @@ public class SudokuGame {
     }
 
     public void init (Grille grille, int difficulty) {
-        
+
         int save1 = 0;
         int save2 = 0;
         int intDifficulty = 0;
@@ -96,11 +92,8 @@ public class SudokuGame {
                     }
                 }
 
-
-
                 if (!fillSudoku(grid, 0, 0)) {
 
-                    // (i, j) was not a good choice!
                     gridWithZeros[i][j] = save1;
                     gridWithZeros[i2][j2] = save2;
 
@@ -111,22 +104,6 @@ public class SudokuGame {
 
             }
         }
-
-
-        System.out.println();
-
-        for (i2=0;i2!=9;i2++) {
-            for (i3=0;i3!=9;i3++) {
-                System.out.printf("%2d",grid[i2][i3]);
-
-                if(i3%3 == 2)
-                    System.out.printf("  ");
-            }
-            System.out.println();
-            if(i2%3 == 2) System.out.println();
-
-        }
-
 
         int index = 0;
         for (int i = 0; i < 9; i++) {
@@ -139,36 +116,6 @@ public class SudokuGame {
             }
         }
 
-    }
-
-
-    public void printGrille(Grille grille) {
-        int[][] tempGrid = new int[9][9];
-        int index = 0;
-
-        for (int i1=0;i1!=9;i1++) {
-            for (int j1 = 0; j1 != 9; j1++) {
-                tempGrid[i1][j1] = grille.getCellTab().get(index++).getValue();
-            }
-        }
-
-        System.out.println();
-
-          for (int i2=0;i2!=9;i2++) {
-            for (int i3=0;i3!=9;i3++) {
-                System.out.printf("%2d",tempGrid[i2][i3]);
-
-                if(i3%3 == 2)
-                    System.out.printf("  ");
-            }
-            System.out.println();
-            if(i2%3 == 2) System.out.println();
-
-        }
-    }
-
-    public int gridAt(int i, int j) {
-        return tab[i][j];
     }
 
 
@@ -210,25 +157,11 @@ public class SudokuGame {
                 tempGrid[i1][j1] = grille.getCellTab().get(index++).getValue();
             }
         }
-//        if(a == 0) {
-//            System.out.println("new tab : ");
-//            for (int i2 = 0; i2 != 9; i2++) {
-//                for (int i3 = 0; i3 != 9; i3++) {
-//                    System.out.printf("%2d", tempGrid[i2][i3]);
-//
-//                    if (i3 % 3 == 2)
-//                        System.out.printf("  ");
-//                }
-//                System.out.println();
-//                if (i2 % 3 == 2) System.out.println();
-//
-//            }
-//        a = 1;
-//        }
+
         tempGrid[cellpos[0]][cellpos[1]] = cellvalue;
-            int[] row = new int[9];
-            int[] column = new int[9];
-            int[] square = new int[9];
+        int[] row = new int[9];
+        int[] column = new int[9];
+        int[] square = new int[9];
 
         for (int i = 0; i < 9; i++) {
             if(i != cellpos[0])
@@ -238,42 +171,31 @@ public class SudokuGame {
         for (int j = 0; j < 9; j++) {
             if(j != cellpos[1])
                 row[j] = tempGrid[cellpos[0]][j];
-
         }
 
         for (int j = 0; j < 9; j++) {
 
-
-
             if(!(((cellpos[1] / 3) * 3 + j % 3) == cellpos[1] && ((cellpos[0] / 3) * 3 + j / 3) == cellpos[0]))
             {
-                //  System.out.printf("%2d %2d et %d %d\n", (cellpos[0] / 3) * 3 + j / 3,(cellpos[1] / 3) * 3 + j % 3,cellpos[0],cellpos[1]);
                 square[j] = tempGrid[(cellpos[0] / 3) * 3 + j / 3][(cellpos[1] / 3) * 3 + j % 3];
             }
-
-
         }
 
 
         if ( !validate(square,cellvalue) || !validate(row,cellvalue) ||!validate(column,cellvalue)){
-            //Log.d("Value", "found :"+tempGrid[cellpos[0]][cellpos[1]]+" expected :" + tab[cellpos[0]][cellpos[1]]);
-            //System.out.println("rouge");
             return false;
         }
-        //System.out.println();
+
         return true;
     }
 
     private static boolean validate(int[] check,int cellval) {
 
-         //System.out.println("chiffre : " + cellval);
         for (int i3=0;i3<check.length;i3++) {
 
-             //System.out.printf("%2d", check[i3]);
             if(check[i3] == cellval)
                 return false;
         }
-        //System.out.println();
         return true;
     }
 
@@ -334,23 +256,21 @@ public class SudokuGame {
 
         int box = getBox(row,col);
 
-        //System.out.println(" cell " + n);
-        //System.out.println(n + " " + row + " " + col);
         for(int i=1;i<=no;i++){
             if( (rows[row].contains(i) && cols[col].contains(i)) && boxes[box].contains(i)){
-                //System.out.print(i + " ");
+
                 pool.add(i);
             }
         }
-        //System.out.println();
+
         int ran;
         Integer sel=0;
         boolean ok = false;
         if(pool.size()==0) return false;
         while(!ok){
-            //System.out.println("loop in cell : " + n);
+
             if(pool.size()==0){
-                //System.out.println("wrong +" + n);
+
                 return false;
             }else{
                 ran = (int)( Math.ceil(Math.random()*(pool.size()-1)) );

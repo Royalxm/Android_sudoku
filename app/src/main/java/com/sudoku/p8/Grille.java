@@ -1,9 +1,6 @@
 package com.sudoku.p8;
 
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.Rect;
-import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -12,7 +9,7 @@ import java.util.ArrayList;
  */
 public class Grille {
 
-   private int width, height, cellWidth, cellHeight;
+    private int width, height, cellWidth, cellHeight;
     private ArrayList<Cellule> celltab;
     private Cellule selectedCell;
 
@@ -74,26 +71,25 @@ public class Grille {
         int index = 0;
         int i, j = 0;
 
-       for(String cellData : cells) {
-           Log.d("SPLIT", cellData);
+        for(String cellData : cells) {
 
-           String[] cell = cellData.split("=");
+            String[] cell = cellData.split("=");
             Cellule cellule =  celltab.get(index);
 
             cellule.setValue(Integer.parseInt(cell[0]));
-           cellule.setLocked(false);
+            cellule.setLocked(false);
 
-           if(cell[1].equals("locked"))
-               cellule.setLocked(true);
-           cellule.setPos((int)index/9, index%9);
+            if(cell[1].equals("locked"))
+                cellule.setLocked(true);
+            cellule.setPos((int)index/9, index%9);
 
-           game.grid[(int)index/9][index%9] = cellule.getValue();
-           if(cell[1].equals("userval"))
-               game.grid[(int)index/9][index%9] = 0;
-           game.tab[(int)index/9][index%9] = cellule.getValue();
+            game.grid[(int)index/9][index%9] = cellule.getValue();
+            if(cell[1].equals("userval"))
+                game.grid[(int)index/9][index%9] = 0;
+            game.tab[(int)index/9][index%9] = cellule.getValue();
 
-           index++;
-       }
+            index++;
+        }
 
         game.fillSudoku(game.grid, 0,0);
 

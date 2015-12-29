@@ -2,7 +2,6 @@ package com.sudoku.p8;
 
 import android.app.Activity;
 import android.graphics.Typeface;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
 

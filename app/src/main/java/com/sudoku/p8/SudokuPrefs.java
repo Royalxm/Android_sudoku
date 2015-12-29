@@ -2,7 +2,6 @@ package com.sudoku.p8;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.SystemClock;
 import android.util.Log;
 
 import java.util.Set;
@@ -76,7 +75,7 @@ public class SudokuPrefs {
 
     public void saveSoundPreference(Boolean value)
     {
-        saveBooleanPreference(SOUND,value);
+        saveBooleanPreference(SOUND, value);
     }
 
     public Boolean getSoundPreference()
@@ -139,7 +138,7 @@ public class SudokuPrefs {
     public int getSavedDiff() {
         String savedDiff = getStringPreference(RESUME_DIFF);
         if(savedDiff.equals("easy")) {
-           return 2;
+            return 2;
         }
         else if(savedDiff.equals("medium")) {
             return 3;
@@ -155,18 +154,12 @@ public class SudokuPrefs {
     public String resumeSudoku() {
         String savedDiff = getStringPreference(RESUME_DIFF);
         if(savedDiff.equals("easy")) {
-//            saveBooleanPreference(IS_MEDIUM, false);
-//            saveBooleanPreference(IS_HARD, false);
             return getStringPreference(GRILLE_EASY);
         }
         else if(savedDiff.equals("medium")) {
-//            saveBooleanPreference(IS_EASY, false);
-//            saveBooleanPreference(IS_HARD, false);
             return getStringPreference(GRILLE_MED);
         }
         else if(savedDiff.equals("hard")) {
-//            saveBooleanPreference(IS_EASY, false);
-//            saveBooleanPreference(IS_MEDIUM, false);
             return getStringPreference(GRILLE_HARD);
         }
 

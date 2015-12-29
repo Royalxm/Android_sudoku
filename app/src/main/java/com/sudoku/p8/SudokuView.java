@@ -68,16 +68,13 @@ public class SudokuView extends SurfaceView  implements SurfaceHolder.Callback, 
 
         grille.initGrid();
 
-        //if(!activity.resumeGame)
         game.init(grille, difficulty);
-        //else
-        //
+
+
         if(activity.resumeGame) {
             grille.restoreGrille(activity.savedGrille, game);
         }
 
-
-       // game.printGrille(grille);
 
         linePaint = new Paint();
         linePaint.setColor(Color.BLACK);
@@ -128,7 +125,7 @@ public class SudokuView extends SurfaceView  implements SurfaceHolder.Callback, 
             return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,value, getResources().getDisplayMetrics());
         else if(type.equals("px"))
             return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX,value, getResources().getDisplayMetrics());
-     return 0;
+        return 0;
     }
 
 
@@ -141,7 +138,7 @@ public class SudokuView extends SurfaceView  implements SurfaceHolder.Callback, 
         Rect bounds =  new Rect();
         int i=0;
         for(Cellule cell : grille.getCellTab()) {
-           // Log.d("Cell Value", "Cell n°+"+i+" : "+cell.getValue());
+            // Log.d("Cell Value", "Cell n°+"+i+" : "+cell.getValue());
             paint.getTextBounds(String.valueOf(cell.getValue()), 0, 1, bounds);
 
 
@@ -153,7 +150,7 @@ public class SudokuView extends SurfaceView  implements SurfaceHolder.Callback, 
                 if(!cell.isLocked() && cell.isWrong(game, grille))
                     paint.setColor(Color.RED);
                 canvas.drawText(String.valueOf(cell.getValue()), cell.getRect().exactCenterX(),
-                    (cell.getRect().bottom - (bounds.height() / 2)) - getDimensions(5, "px"), paint);
+                        (cell.getRect().bottom - (bounds.height() / 2)) - getDimensions(5, "px"), paint);
 
             }
             i++;
@@ -164,10 +161,6 @@ public class SudokuView extends SurfaceView  implements SurfaceHolder.Callback, 
     private void paintCell(Canvas canvas) {
         if(paintCell) {
 
-
-
-            Log.i("rer", " zezeze  " + width + "  " + height);
-
             for(int i= 0;i != width;i++)
             {
                 drawsz = grille.getCell(i, (int)ycell);
@@ -176,10 +169,7 @@ public class SudokuView extends SurfaceView  implements SurfaceHolder.Callback, 
                 canvas.drawRect(drawss.getRect(), cellBorderPaint1);
                 canvas.drawRect(paintedCell.getRect(), cellBorderPaint);
             }
-
-
         }
-
 
     }
 
@@ -202,7 +192,6 @@ public class SudokuView extends SurfaceView  implements SurfaceHolder.Callback, 
             if(selectedCell != null) {
                 if(!selectedCell.isLocked()){
                     grille.getSelectedCell().setValue(value);
-                    Log.d("setval", "setted value : "+grille.getSelectedCell().getValue());
                 }
             }
             else Toast.makeText(getContext(), R.string.select_a_case , Toast.LENGTH_LONG).show();
@@ -239,7 +228,7 @@ public class SudokuView extends SurfaceView  implements SurfaceHolder.Callback, 
     public void run() {
         Canvas c = null;
         while (in) {
-          //  Log.i("-> FCT <-", "in");
+            //  Log.i("-> FCT <-", "in");
             try {
                 cv_thread.sleep(40);
 
@@ -282,14 +271,14 @@ public class SudokuView extends SurfaceView  implements SurfaceHolder.Callback, 
     public boolean onTouchEvent(MotionEvent event) {
         Log.i("-> FCT <-", "onTouchEvent X: "+ event.getX()+" Y: "+ event.getY());
 
-       paintedCell = grille.getCell((int)event.getX(), (int)event.getY());
+        paintedCell = grille.getCell((int)event.getX(), (int)event.getY());
 
         xcell =event.getX();
         ycell = event.getY();
 
         if(paintedCell != null) {
             paintCell = true;
-            Log.d("PAINT", "paint cell n°"+grille.getCellTab().indexOf(paintedCell));
+
             paintedCell.setSelected();
             grille.cellSelected(paintedCell);
         }

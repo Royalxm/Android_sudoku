@@ -7,8 +7,8 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.media.MediaPlayer;
-import android.support.v7.app.AlertDialog;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.Button;
@@ -65,7 +65,6 @@ public class MenuActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MenuActivity.this, OptionsActivity.class);
-                //   intent.putExtra("key",sound);
                 startActivity(intent);
             }
         });
@@ -171,12 +170,6 @@ public class MenuActivity extends Activity {
 
         setLocale();
 
-        Toast.makeText(this,"locale : "+getResources().getConfiguration().locale.getLanguage(), Toast.LENGTH_SHORT).show();
-
-
-        Toast.makeText(this,getString(R.string.resume_game), Toast.LENGTH_SHORT).show();
-
-
 
         if(!newIntent) {
             jeuEnCours = prefs.canResume();
@@ -194,7 +187,7 @@ public class MenuActivity extends Activity {
     @Override
     protected void onPause() {
         super.onPause();
-    if(!(prefs.getSoundPreference()))
+        if(!(prefs.getSoundPreference()))
         {
             Music.getInstance().stopPlaying();
         }
@@ -205,8 +198,6 @@ public class MenuActivity extends Activity {
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
 
-        //MainActivity.this.backToMenu();
-
         jeuEnCours = prefs.canResume();
 
         if(jeuEnCours) reprendre.setVisibility(View.VISIBLE);
@@ -214,7 +205,6 @@ public class MenuActivity extends Activity {
 
         newIntent = true;
 
-        Toast.makeText(this,"onnewintent", Toast.LENGTH_SHORT).show();
     }
 
     private void jeuenCoursPopup(final String difficultyButton) {

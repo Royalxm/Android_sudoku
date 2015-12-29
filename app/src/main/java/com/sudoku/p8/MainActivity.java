@@ -1,20 +1,16 @@
 package com.sudoku.p8;
 
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Chronometer;
-import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -70,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setDisplayShowCustomEnabled(true);
 
-       if(!resumeGame) chrono.setBase(SystemClock.elapsedRealtime());
+        if(!resumeGame) chrono.setBase(SystemClock.elapsedRealtime());
         else restoreTimer();
 
         chrono.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
@@ -134,7 +130,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-       // Music.getInstance().startPlaying();
         if(chronoStopped && !gameWon) {
             chrono.setBase(chrono.getBase() + SystemClock.elapsedRealtime() - lastPause);
             chrono.start();
@@ -145,11 +140,6 @@ public class MainActivity extends AppCompatActivity {
         if (printOnce) {
             chrono.stop();
             gameWon = true;
-
-            Log.d("gamewon", "gamewon");
-
-            //
-
 
 
             runOnUiThread(new Runnable() {
@@ -187,7 +177,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onSupportNavigateUp() {
         backToMenu();
-        Toast.makeText(this,"onnavup ", Toast.LENGTH_SHORT).show();
+
         return super.onSupportNavigateUp();
     }
 

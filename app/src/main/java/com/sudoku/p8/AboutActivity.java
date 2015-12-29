@@ -2,12 +2,11 @@ package com.sudoku.p8;
 
 import android.app.Activity;
 import android.graphics.Typeface;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
 
 public class AboutActivity extends Activity {
-     SudokuPrefs prefs;
+    SudokuPrefs prefs;
 
     TextView aboutTextView1,aboutTextView2,aboutTextView3,aboutTextView4;
 

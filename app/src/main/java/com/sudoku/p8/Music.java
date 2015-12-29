@@ -21,13 +21,13 @@ public class Music {
 
     public void initalizeMediaPlayer(Context context, int musicId){
 
-            sound = MediaPlayer.create(context, musicId);
+        sound = MediaPlayer.create(context, musicId);
 
     }
 
     public int playe() {
         if (sound.isPlaying()) {
-           return 1;
+            return 1;
         }
         else
             return 0;
